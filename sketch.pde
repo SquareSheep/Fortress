@@ -13,11 +13,11 @@ static float fftAmp = 5;
 static float volumeGain = -10;
 static String songName = "../Music/everchanging.mp3";
 
-IColor defaultFill = new IColor(222,125,222,255);
-IColor defaultStroke = new IColor(0,0,0,0);
+IColor defaultFill = new IColor(56,115,207,255);
+IColor defaultStroke = new IColor(255,255,255,255);
 
 void render() {
-
+	cam.ang.P.y += 0.02;
 }
 
 void keyboardInput() {
@@ -31,4 +31,10 @@ void addEvents() {
 void setSketch() {
 	front = new PVector(de*2,de,de*0.2);
 	back = new PVector(-de*2,-de,-de*2);
+	mobs.add(new Heart(new PVector(0,0,0),de*0.5));
+	for (int i = 0 ; i < 10 ; i ++) {
+		for (int k = 0 ; k < 10 ; k ++) {
+			mobs.add(newPoly("Box",new PVector(-de+i*de*0.2,de,-de+k*de*0.2), new PVector(0,0,0),de*0.1));
+		}
+	}
 }

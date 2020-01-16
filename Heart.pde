@@ -1,5 +1,5 @@
-static float zW = 0.2;
-static float zMult = 0.8;
+static float zW = 0.25;
+static float zMult = 0.7;
 class Heart extends Poly {
 
 	Heart(PVector p, float w) {
@@ -20,7 +20,13 @@ class Heart extends Poly {
 			new int[]{16,17,18,19,20,21,22,23}
 		});
 		for (int i = 0 ; i < fillStyle.length ; i ++) {
-			fillStyle[i].reset(255-i*5,80-i*2,80-i*2,255,-5,-5,-5,-1,(float)i/fillStyle.length*binCount);
+			fillStyle[i].reset(255-i*5,80-i*2,80-i*2,255,2,-5,-5,-1.5,((float)i/fillStyle.length*binCount+50)%binCount);
 		}
+	}
+
+	void update() {
+		super.update();
+		sca.X = 1+avg/1000;
+		if (timer.beat) sca.x += 0.25;
 	}
 }

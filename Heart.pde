@@ -20,10 +20,7 @@ class Heart extends Poly {
 			new int[]{16,17,18,19,20,21,22,23}
 		});
 		for (int i = 0 ; i < fillStyle.length ; i ++) {
-			fillStyle[i].reset(200,50,50,255,0,0,0,0,-1);
-			fillStyle[i].rc += -i*3;
-			fillStyle[i].gc += i*3;
-			fillStyle[i].bc += i*3;
+			fillStyle[i].reset(255-i*5,80-i*2,80-i*2,255,-5,-5,-5,-1,(float)i/fillStyle.length*binCount);
 		}
 	}
 }

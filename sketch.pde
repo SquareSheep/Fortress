@@ -32,9 +32,13 @@ void setSketch() {
 	front = new PVector(de*2,de,de*0.2);
 	back = new PVector(-de*2,-de,-de*2);
 	mobs.add(new Heart(new PVector(0,0,0),de*0.5));
-	for (int i = 0 ; i < 10 ; i ++) {
-		for (int k = 0 ; k < 10 ; k ++) {
-			mobs.add(newPoly("Box",new PVector(-de+i*de*0.2,de,-de+k*de*0.2), new PVector(0,0,0),de*0.1));
+	float row = 10;
+	float w = de*2.5;
+	for (int i = 0 ; i < row ; i ++) {
+		for (int k = 0 ; k < row ; k ++) {
+			Poly poly = newPoly("Box",new PVector(-de+i*w/row,de,-de+k*w/row), new PVector(0,0,0),w/2/row);
+			poly.fillStyleSetM(-2,-2,3,-1, i*row+k);
+			mobs.add(poly);
 		}
 	}
 }

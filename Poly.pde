@@ -75,50 +75,56 @@ class Poly extends Mob {
   }
 
   void fillStyleSetMass(float mass) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       fillStyle[i].setMass(mass);
     }
   }
 
   void fillStyleSetVMult(float vMult) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       fillStyle[i].setVMult(vMult);
     }
   }
 
   void fillStyleSetx(float rc, float gc, float bc, float ac) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       fillStyle[i].setx(rc,gc,bc,ac);
     }
   }
 
   void fillStyleSetX(float rc, float gc, float bc, float ac) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       fillStyle[i].setX(rc,gc,bc,ac);
     }
   }
 
   void fillStyleSetM(float rc, float gc, float bc, float ac) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       fillStyle[i].setM(rc,gc,bc,ac);
     }
   }
 
+  void fillStyleSetM(float rc, float gc, float bc, float ac, float index) {
+    for (int i = 0 ; i < faces.length ; i ++) {
+      fillStyle[i].setM(rc,gc,bc,ac, (index + i) % binCount);
+    }
+  }
+
   void strokeStyleSet(float rc, float gc, float bc, float ac, float rm, float gm, float bm, float am, float index) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       strokeStyle[i].set(rc,gc,bc,ac,rm,gm,bm,am,index);
     }
   }
 
   void fillStyleSetC(float rc, float gc, float bc, float ac) {
-    for (int i = 0 ; i < vert.length ; i ++) {
+    for (int i = 0 ; i < faces.length ; i ++) {
       fillStyle[i].setC(rc,gc,bc,ac);
     }
   }
 
   void fillStyleIndex(float index) {
-    for (int i = 0 ; i < vert.length ; i ++) {
-      fillStyle[i].index = (int)abs((index + i - vert.length/2)%binCount);
+    for (int i = 0 ; i < faces.length ; i ++) {
+      fillStyle[i].index = (int)abs((index + i - faces.length/2)%binCount);
     }
   }
 }

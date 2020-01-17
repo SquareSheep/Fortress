@@ -61,11 +61,11 @@ void draw() {
 
   render();
   
-  // for (Entity mob : mobs) {
-  //   if (mob.draw) {
-  //     mob.render();
-  //   }
-  // }
+  for (Entity mob : mobs) {
+    if (mob.draw) {
+      mob.render();
+    }
+  }
 
   fill(255);
   //drawBorders();

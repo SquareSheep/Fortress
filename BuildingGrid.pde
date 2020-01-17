@@ -15,6 +15,7 @@ class Tower extends BuildingGrid {
 			FloorGrid(col,row),
 		}, col*0.5-0.5,12,row*0.5-0.5);
 		nofCubes = col*row + (col*2+row*2-2)*10 + (col+row-1);
+		cubes.add(nofCubes, w*(col+row)/2, 0.03,3);
 	}
 }
 
@@ -30,78 +31,8 @@ class Castle extends BuildingGrid {
 			FloorGrid(col,row),
 		}, col*0.5-0.5,7,row*0.5-0.5);
 		nofCubes = col*row + (col*2+row*2-2)*5 + (col+row-1);
+		cubes.add(nofCubes, w*(col+row)/2, 0.03,3);
 	}
-}
-
-float[] FloorGrid(int col, int row) {
-	float[] ar = new float[col*row*2];
-	for (int i = 0 ; i < col ; i ++) {
-		for (int k = 0 ; k < row ; k ++) {
-			ar[(i*col+k)*2] = i;
-			ar[(i*col+k)*2+1] = k;
-		}
-	}
-	return ar;
-}
-
-float[] ParapetGrid(int col, int row) {
-	float[] ar = new float[(col*2+row*2-2)];
-
-	int k = 0;
-	for (int i = 0 ; i < col/2 ; i ++) {
-		ar[i*2] = k;
-		ar[i*2+1] = 0;
-		k += 2;
-	}
-	k = 0;
-	for (int i = col/2 ; i < (col+row-1)/2 ; i ++) {
-		ar[i*2] = 0;
-		ar[i*2+1] = k;
-		k += 2;
-	}
-	k = 0;
-	for (int i = (col+row-1)/2 ; i < (col*2+row-1)/2 ; i ++) {
-		ar[i*2] = k;
-		ar[i*2+1] = row-1;
-		k += 2;
-	}
-	k = 0;
-	for (int i = (col*2+row-1)/2 ; i < (col*2+row*2-2)/2 ; i ++) {
-		ar[i*2] = col-1;
-		ar[i*2+1] = k;
-		k += 2;
-	}
-	return ar;
-}
-
-float[] WallGrid(int col, int row) {
-	float[] ar = new float[(col*2+row*2-2)*2];
-
-	int k = 0;
-	for (int i = 0 ; i < col ; i ++) {
-		ar[i*2] = k;
-		ar[i*2+1] = 0;
-		k ++;
-	}
-	k = 1;
-	for (int i = col ; i < col+row-1 ; i ++) {
-		ar[i*2] = 0;
-		ar[i*2+1] = k;
-		k ++;
-	}
-	k = 0;
-	for (int i = col+row-1 ; i < col*2+row-1 ; i ++) {
-		ar[i*2] = k;
-		ar[i*2+1] = row-1;
-		k ++;
-	}
-	k = 1;
-	for (int i = col*2+row-1 ; i < col*2+row*2-2 ; i ++) {
-		ar[i*2] = col-1;
-		ar[i*2+1] = k;
-		k ++;
-	}
-	return ar;
 }
 
 class BuildingGrid extends Mob {
@@ -114,7 +45,7 @@ class BuildingGrid extends Mob {
 
 	BuildingGrid(float x, float y, float z, float w, float[][] ar, float dx, float dy, float dz) {
 		this.p = new Point(x,y,z);
-		this.w = w;
+		cubes.w = w;
 		this.ar = new Point[ar.length][];
 		this.taken = new Cube[this.ar.length][];
 		for (int i = 0 ; i < this.ar.length ; i ++) {
@@ -145,7 +76,6 @@ class BuildingGrid extends Mob {
 				if (taken[i][k] != null) taken[i][k].p.P.set(ar[i][k].p.x,ar[i][k].p.y,ar[i][k].p.z);
 			}
 		}
-		//renderPoints();
 		pop();
 	}
 
@@ -237,4 +167,75 @@ class BuildingGrid extends Mob {
 			}
 		}
 	}
+}
+
+float[] FloorGrid(int col, int row) {
+	float[] ar = new float[col*row*2];
+	for (int i = 0 ; i < col ; i ++) {
+		for (int k = 0 ; k < row ; k ++) {
+			ar[(i*col+k)*2] = i;
+			ar[(i*col+k)*2+1] = k;
+		}
+	}
+	return ar;
+}
+
+float[] ParapetGrid(int col, int row) {
+	float[] ar = new float[(col*2+row*2-2)];
+
+	int k = 0;
+	for (int i = 0 ; i < col/2 ; i ++) {
+		ar[i*2] = k;
+		ar[i*2+1] = 0;
+		k += 2;
+	}
+	k = 0;
+	for (int i = col/2 ; i < (col+row-1)/2 ; i ++) {
+		ar[i*2] = 0;
+		ar[i*2+1] = k;
+		k += 2;
+	}
+	k = 0;
+	for (int i = (col+row-1)/2 ; i < (col*2+row-1)/2 ; i ++) {
+		ar[i*2] = k;
+		ar[i*2+1] = row-1;
+		k += 2;
+	}
+	k = 0;
+	for (int i = (col*2+row-1)/2 ; i < (col*2+row*2-2)/2 ; i ++) {
+		ar[i*2] = col-1;
+		ar[i*2+1] = k;
+		k += 2;
+	}
+	return ar;
+}
+
+float[] WallGrid(int col, int row) {
+	float[] ar = new float[(col*2+row*2-2)*2];
+
+	int k = 0;
+	for (int i = 0 ; i < col ; i ++) {
+		ar[i*2] = k;
+		ar[i*2+1] = 0;
+		k ++;
+	}
+	k = 1;
+	for (int i = col ; i < col+row-1 ; i ++) {
+		ar[i*2] = 0;
+		ar[i*2+1] = k;
+		k ++;
+	}
+	k = 0;
+	for (int i = col+row-1 ; i < col*2+row-1 ; i ++) {
+		ar[i*2] = k;
+		ar[i*2+1] = row-1;
+		k ++;
+	}
+	k = 1;
+	for (int i = col*2+row-1 ; i < col*2+row*2-2 ; i ++) {
+		ar[i*2] = col-1;
+		ar[i*2+1] = k;
+		k ++;
+	}
+	return ar;
 }

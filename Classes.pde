@@ -159,8 +159,6 @@ abstract class MobF extends Mob {
 }
 
 abstract class Mob extends Entity {
-  boolean finished = false;
-  boolean draw = true;
   Point p;
   Point pv = new Point(0,0,0);
   Point r = new Point(0,0,0);
@@ -436,6 +434,10 @@ class IColor extends AColor {
   void reset(float rc, float gc, float bc, float ac, float rm, float gm, float bm, float am, float index) {
     set(rc,gc,bc,ac,rm,gm,bm,am,index);
     r.x = rc; g.x = gc; b.x = bc; a.x = ac;
+  }
+
+  void reset(IColor other) {
+    reset(other.r.x, other.g.x, other.b.x, other.a.x, other.rm, other.gm, other.bm, other.am, other.index);
   }
 }
 

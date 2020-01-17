@@ -11,7 +11,6 @@ class Heart extends Poly {
 				0,-0.5*zMult,-zW, 0.5*zMult,-1*zMult,-zW, 1*zMult,-0.5*zMult,-zW, 1*zMult,0,-zW, 0,1*zMult,-zW
 		},
 		new int[][]{
-			// 		 {0, 1, 2, 3, 4, 5, 6, 7}
 			new int[]{8, 9, 10,11,12,13,14,15},
 			new int[]{0,1,9,8}, new int[]{1,2,10,9}, new int[]{2,3,11,10}, new int[]{3,4,12,11}, 
 			new int[]{4,5,13,12}, new int[]{5,6,14,13}, new int[]{6,7,15,14}, new int[]{7,0,8,15},

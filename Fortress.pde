@@ -34,7 +34,7 @@ void setup() {
   size(600,600,P3D);
   de = (int)(width*0.5+height*0.5);
 
-  cam = new Camera(width/2,height/2,-de*1.2, 0,0,0);
+  cam = new Camera(width*0.5,height*0.75,-de*1.2, -0.35,0,0);
 
   textSize(de/10);
   rectMode(CENTER);

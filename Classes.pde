@@ -46,6 +46,10 @@ abstract class ObjectPool<T extends Entity> extends Entity {
   //   arm ++;
   // }
 
+  T getLast() {
+    return ar.get(0);
+  }
+
   void remove(int i) {
     ar.add(ar.remove(i));
     arm --;

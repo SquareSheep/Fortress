@@ -1,7 +1,33 @@
+static float cubeW = 0.1;
+
+class CubePool extends ObjectPool<Cube> {
+	void set(Cube mob, float x, float y, float z, float w, float ax, float ay, float az) {
+		mob.finished = false;
+		mob.draw = true;
+		mob.p.reset(x,y,z);
+		mob.ang.reset(ax,ay,az);
+		mob.w = w;
+	}
+
+	void add(float x, float y, float z, float w, float ax, float ay, float az) {
+		if (arm == ar.size()) ar.add(0,new Cube());
+		set(ar.get(0), x,y,z, w, ax,ay,az);
+		arm ++;
+	}
+
+	void add(float x, float y, float z) {
+		add(x,y,z, cubeW*de, 0,0,0);
+	}
+}
+
 class Cube extends MobF {
 
 	boolean locked = false;
-	Point anchor;
+
+	Cube() {
+		p = new Point();
+		ang = new Point();
+	}
 
 	Cube(float x, float y, float z, float w) {
 		this.p = new Point(x,y,z);
@@ -10,7 +36,23 @@ class Cube extends MobF {
 	}
 
 	Cube(float x, float y, float z) {
-		this(x,y,z, cubeW);
+		this(x,y,z, de*cubeW);
+	}
+
+	void update() {
+		fillStyle.update();
+		strokeStyle.update();
+		if (!locked) {
+			p.P.add(pv.p);
+	   		ang.P.add(av.p);
+		}
+	    p.update();
+	    pv.update();
+	    r.update();
+	    ang.update();
+	    rang.update();
+	    av.update();
+	    sca.update();
 	}
 
 	void render() {

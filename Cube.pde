@@ -1,12 +1,12 @@
 static float cubeW = 0.1;
 
 class CubePool extends ObjectPool<Cube> {
-	void set(Cube mob, float x, float y, float z, float w, float ax, float ay, float az) {
-		mob.finished = false;
-		mob.draw = true;
-		mob.p.reset(x,y,z);
-		mob.ang.reset(ax,ay,az);
-		mob.w = w;
+	void set(Cube cube, float x, float y, float z, float w, float ax, float ay, float az) {
+		cube.finished = false;
+		cube.draw = true;
+		cube.p.reset(x,y,z);
+		cube.ang.reset(ax,ay,az);
+		cube.w = w;
 	}
 
 	void add(float x, float y, float z, float w, float ax, float ay, float az) {

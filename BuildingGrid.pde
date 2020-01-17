@@ -1,3 +1,23 @@
+class Tower extends BuildingGrid {
+	Tower(float x, float y, float z, float w, int col, int row) {
+		super(x,y,z, w, new float[][]{
+			ParapetGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			WallGrid(col,row),
+			FloorGrid(col,row),
+		}, col*0.5-0.5,12,row*0.5-0.5);
+		nofCubes = col*row + (col*2+row*2-2)*10 + (col+row-1);
+	}
+}
+
 class Castle extends BuildingGrid {
 	Castle(float x, float y, float z, float w, int col, int row) {
 		super(x,y,z, w, new float[][]{
@@ -6,9 +26,10 @@ class Castle extends BuildingGrid {
 			WallGrid(col,row),
 			WallGrid(col,row),
 			WallGrid(col,row),
+			WallGrid(col,row),
 			FloorGrid(col,row),
-		}, col*0.5-0.5,2.5,row*0.5-0.5);
-		nofCubes = col*row + (col*2+row*2-2)*4 + (col+row-1);
+		}, col*0.5-0.5,7,row*0.5-0.5);
+		nofCubes = col*row + (col*2+row*2-2)*5 + (col+row-1);
 	}
 }
 
@@ -197,6 +218,22 @@ class BuildingGrid extends Mob {
 			}
 			if (currZ < taken.length) {
 				unlock(currZ, currI);
+			}
+		}
+	}
+
+	void unlockAll() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			for (int k = 0 ; k < ar[i].length ; k ++) {
+				unlock(i,k);
+			}
+		}
+	}
+
+	void lockAll() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			for (int k = 0 ; k < ar[i].length ; k ++) {
+				lock(i,k);
 			}
 		}
 	}

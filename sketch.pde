@@ -54,7 +54,7 @@ void setSketch() {
 		Cube cube = cubes.getLast();
 		cube.av.reset(random(-amp,amp),random(-amp,amp),random(-amp,amp));
 		cube.pv.reset(random(-amp2,amp2),random(-amp2,amp2),random(-amp2,amp2));
-		cube.fillStyle.setM(1,1,1,0, i%binCount);
+		cube.fillStyle.setM(-1,-1,-0.5,-1, i%binCount);
 	}
 	mobs.add(castle);
 

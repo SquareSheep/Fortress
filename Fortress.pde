@@ -12,7 +12,7 @@ float avg;
 ArrayList<Event> events = new ArrayList<Event>();
 
 // Used to store global animation entities
-ArrayList<Entity> mobs = new ArrayList<Entity>();
+ArrayList<BuildingGrid> mobs = new ArrayList<BuildingGrid>();
 
 Camera cam;
 static int de;
@@ -118,7 +118,7 @@ void updateEvents() {
 }
 
 void updateMobs() {
-  for (Entity mob : mobs) {
+  for (BuildingGrid mob : mobs) {
     mob.update();
   }
   for (int i = 0 ; i < mobs.size() ; i ++) {
@@ -187,7 +187,7 @@ void keyPressed() {
     }
     println("Cam lock: " + cam.lock);
   } else {
-    println("KEY: " + key + " " + currTime + " " + currBeat + " " + frameRate);
+    println("KEY: " + key + " " + frameCount + " " + currTime + " " + currBeat + " " + frameRate);
     keyP = key;
     keyboardInput();
   }

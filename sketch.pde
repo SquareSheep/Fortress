@@ -15,7 +15,6 @@ static String songName = "../Music/fortress.mp3";
 
 IColor defaultFill = new IColor(56,115,207,255);
 IColor defaultStroke = new IColor(232,232,230,255);
-//IColor defaultStroke = new IColor(0,0,0,255);
 
 CubePool cubes;
 Castle castle;
@@ -23,6 +22,7 @@ Tower tower;
 Tower tower2;
 Heart heart;
 
+ArrayList<BuildingGrid> notes = new ArrayList<BuildingGrid>();
 ArrayList<BuildingGrid> stabs = new ArrayList<BuildingGrid>();
 ArrayList<BuildingGrid> stabs2 = new ArrayList<BuildingGrid>();
 ArrayList<BuildingGrid> piano = new ArrayList<BuildingGrid>();
@@ -38,6 +38,7 @@ void render() {
 		heart.update();
 		heart.render();
 	}
+	cam.ang.P.y += cos((float)frameCount/130)*0.004;
 }
 
 void setSketch() {
@@ -61,11 +62,11 @@ void setSketch() {
 	tower2.lockAllInstant();
 	mobs.add(tower2);
 	
-	castle = new Castle(0,0,0, de*cubeW,11,11);
+	castle = new Castle(0,0,0, de*cubeW,5,5); // 11,11
 	castle.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
 	castle.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	castle.cubes.scaSet(0.003);
-	castle.lockAllInstant();
+	//castle.lockAllInstant();
 	mobs.add(castle);
 
 	stabs.add(new Tower(-de*0.8,0,0, de*cubeW,5,5));
@@ -87,7 +88,15 @@ void setSketch() {
 		mobs.add(mob);
 	}
 
-	for (Entity mob : mobs) {
+	notes.add(new Tower(0,0,0, de*cubeW, 5,5));
+	notes.get(0).cubes.fillStyleSetC(75,155,55,255, 56,115,115,0);
+	notes.get(0).cubes.fillStyleSetM(1,1,1,0,2,1,1,0);
+	notes.get(0).lockAllInstant();
+	for (BuildingGrid mob : notes) {
+		mobs.add(mob);
+	}
+
+	for (BuildingGrid mob : mobs) {
 		mob.draw = false;
 	}
 }

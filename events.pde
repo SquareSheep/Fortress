@@ -12,6 +12,11 @@ SetDraws:
 Everything else's draw boolean is controlled by their specific events.
 Stabs, pulses, build up are separate.
 
+Event types: 
+- Draw (stabs, melody, setdraw, etc)
+- Color (cubes.fillStyleSetC, setM, etc)
+- Pattern (making wave-like patterns with BuildingGrids' p values)
+
 Quiet:
 - Floating cubes
 - Built or half-built castles, towers
@@ -48,46 +53,61 @@ Melody:
 340 End
 
 */
+// DRAW EVENTS
 
-class SetDraws extends Event {
-	boolean heartDraw;
-	boolean castleDraw;
-	boolean towerDraw;
-
-	SetDraws(float time, boolean heartDraw, boolean castleDraw, boolean towerDraw) {
-		super(time, time+1);
-		this.heartDraw = heartDraw;
-		this.castleDraw = castleDraw;
-		this.towerDraw = towerDraw;
-	}
-
-	void spawn() {
-		castle.draw = castleDraw;
-		tower.draw = towerDraw;
-		tower2.draw = towerDraw;
-		heart.draw = heartDraw;
-	}
-}
-
-class SetFloating extends Event {
+int[][] melody = new int[][]{
+	new int[]{3,13,23,33,42,53,61,72,83,102,112},
+	new int[]{5,14,23,35,57,67,78,96,115,123},
+	new int[]{1,11,22,32,53,62,72,83,103,113},
+	new int[]{1,10,22,31,52,62,73,83,102,112},
+	new int[]{8,18,29,40,59,80,98,119,130},
+	new int[]{2,11,21,30,49,59,68,78,98,107}
+};
+class Melody1 extends Event {
+	int start;
+	int curr;
 	int[] ar;
+	BuildingGrid mob = notes.get(0);
 
-	SetFloating(float time, float timeEnd, int[] ar) {
-		super(time, timeEnd);
-		this.ar = ar;
-	}
+	 Melody1(float time, int[] ar) {
+	 	super(time-1, time+3);
+	 	this.ar = ar;
+	 }
 
-	void spawn() {
-		for (int i = 0 ; i < ar.length ; i ++) {
-			floaters[ar[i]].draw = true;
-		}
-	}
+	 void spawn() {
+	 	mob.draw = true;
+	 	start = frameCount+30;
+	 	println("START: " + frameCount);
+	 }
 
-	void end() {
-		for (int i = 0 ; i < ar.length ; i ++) {
-			floaters[ar[i]].draw = false;
-		}
-	}
+	 void update() {
+	 	curr = frameCount - start;
+	 	for (int i = 0 ; i < ar.length ; i ++) {
+	 		if (curr == ar[i]) laser(mob.cubes.ar.get((int)random(mob.cubes.arm)));
+	 	}
+	 }
+
+	 void end() {
+	 	mob.draw = false;
+	 }
+
+	 void laser(Cube cube) {
+	 	float amp = de*10;
+	 	switch ((int)random(2)) {
+	 		case 0:
+	 		cube.w.p.z += amp;
+	 		//cube.p.p.z += amp*0.5;
+	 		break;
+	 		case 1:
+	 		cube.w.p.x += amp;
+	 		//cube.p.p.x += amp*0.5;
+	 		break;
+	 	}
+	 	
+	 	//cube.av.p.z += 0.1;
+	 	//cube.av.P.z += 0.1;
+	 	cube.fillStyle.setx(500,500,500,255);
+	 }
 }
 
 class MelodyStabs extends Event {
@@ -119,16 +139,21 @@ class MelodyStabs extends Event {
 
 	void update() {
 		curr = frameCount-start;
-		if (curr == 5) {
-			burst(stabs.get(index1));
-		} else if (curr == 15) {
-			burst(stabs.get(index2));
-		} else if (curr == 25) {
-			burst(stabs.get(index3));
-		} else if (curr == 35) {
-			stabs.get(index1).cubes.scaX(0);
-			stabs.get(index2).cubes.scaX(0);
-			stabs.get(index3).cubes.scaX(0);
+		switch (curr) {
+			case 5:
+				burst(stabs.get(index1));
+				break;
+			case 15:
+				burst(stabs.get(index2));
+				break;
+			case 25:
+				burst(stabs.get(index3));
+				break;
+			case 30:
+				stabs.get(index1).cubes.scaX(0);
+				stabs.get(index2).cubes.scaX(0);
+				stabs.get(index3).cubes.scaX(0);
+				break;
 		}
 	}
 
@@ -191,11 +216,57 @@ class Pulses extends Event {
 	}
 }
 
-class CubesFillStyleSetM extends Event {
+class SetDraws extends Event {
+	boolean heartDraw;
+	boolean castleDraw;
+	boolean towerDraw;
+
+	SetDraws(float time, boolean heartDraw, boolean castleDraw, boolean towerDraw) {
+		super(time, time+1);
+		this.heartDraw = heartDraw;
+		this.castleDraw = castleDraw;
+		this.towerDraw = towerDraw;
+	}
+
+	SetDraws(float time, boolean boo) {
+		this(time, boo,boo,boo);
+	}
+
+	void spawn() {
+		castle.draw = castleDraw;
+		tower.draw = towerDraw;
+		tower2.draw = towerDraw;
+		heart.draw = heartDraw;
+	}
+}
+
+class SetFloating extends Event {
+	int[] ar;
+
+	SetFloating(float time, float timeEnd, int[] ar) {
+		super(time, timeEnd);
+		this.ar = ar;
+	}
+
+	void spawn() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			floaters.get(ar[i]).draw = true;
+		}
+	}
+
+	void end() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			floaters.get(ar[i]).draw = false;
+		}
+	}
+}
+
+// COLOR EVENTS
+class AllCubesFillStyleSetM extends Event {
 	float r,g,b,a;
 	float rr,gr,br,aa;
 
-	CubesFillStyleSetM(float time, float r, float g, float b, float a, float rr, float gr, float br, float aa) {
+	AllCubesFillStyleSetM(float time, float r, float g, float b, float a, float rr, float gr, float br, float aa) {
 		super(time, time+1);
 		this.r = r; this.g = g; this.b = b; this.a = a;
 		this.rr = rr; this.gr = gr; this.br = br; this.aa = aa;
@@ -208,11 +279,11 @@ class CubesFillStyleSetM extends Event {
 	}
 }
 
-class CubesFillStyleSetC extends Event {
+class AllCubesFillStyleSetC extends Event {
 	float r,g,b,a;
 	float rr,gr,br,aa;
 
-	CubesFillStyleSetC(float time, float r, float g, float b, float a, float rr, float gr, float br, float aa) {
+	AllCubesFillStyleSetC(float time, float r, float g, float b, float a, float rr, float gr, float br, float aa) {
 		super(time, time+1);
 		this.r = r; this.g = g; this.b = b; this.a = a;
 		this.rr = rr; this.gr = gr; this.br = br; this.aa = aa;
@@ -225,6 +296,45 @@ class CubesFillStyleSetC extends Event {
 	}
 }
 
+// PATTERN EVENTS
+class GlobalWavePattern extends Event {
+	ArrayList<Point> ar = new ArrayList<Point>();
+	int start;
+	int curr;
+
+	GlobalWavePattern(float time) {
+		super(time, time+114);
+	}
+
+	void spawn() {
+		start = frameCount;
+		for (BuildingGrid mob : mobs) {
+			if (mob.draw) {
+				for (int i = 0 ; i < mob.ar.length ; i ++) {
+					for (int k = 0 ; k < mob.ar[i].length ; k ++) {
+						ar.add(mob.ar[i][k]);
+					}
+				}
+			}
+		}
+	}
+
+	void update() {
+		curr = frameCount - start;
+		if (curr < ar.size()) {
+			for (int i = 0 ; i < 30 ; i ++) {
+				Point p = ar.get((curr+i*10)%ar.size());
+				p.v.y -= de;
+			}
+		}
+	}
+
+	void end() {
+		ar.clear();
+	}
+}
+
+// CAMERA EVENTS
 class CameraPAdd extends Event {
 	float x; float y; float z;
 

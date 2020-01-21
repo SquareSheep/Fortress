@@ -28,10 +28,19 @@ class Castle extends BuildingGrid {
 			WallGrid(col,row),
 			WallGrid(col,row),
 			WallGrid(col,row),
+			WallGrid(col,row),
 			FloorGrid(col,row),
-		}, col*0.5-0.5,7,row*0.5-0.5);
-		nofCubes = col*row + (col*2+row*2-2)*5 + (col+row-1);
+		}, col*0.5-0.5,8,row*0.5-0.5);
+		nofCubes = col*row + (col*2+row*2-2)*6 + (col+row-1);
 		cubes.add(nofCubes, w*(col+row)/2, 0.03,3);
+	}
+}
+
+class Wall extends BuildingGrid {
+	Wall(float x, float y, float z, float w, int col, int row) {
+		super(x,y,z, w, Wall2DGrid(col,row), col*0.5-0.5,row*0.5-0.5,0);
+		nofCubes = col*row;
+		cubes.add(nofCubes,w*(col+row)/2, 0.03,3);
 	}
 }
 
@@ -45,6 +54,7 @@ class BuildingGrid extends Mob {
 
 	BuildingGrid(float x, float y, float z, float w, float[][] ar, float dx, float dy, float dz) {
 		this.p = new Point(x,y,z);
+		this.ang = new Point();
 		cubes.w = w;
 		this.ar = new Point[ar.length][];
 		this.taken = new Cube[this.ar.length][];
@@ -59,6 +69,7 @@ class BuildingGrid extends Mob {
 	}
 
 	void update() {
+		super.update();
 		cubes.update();
 		for (int i = 0 ; i < ar.length ; i ++) {
 			for (int k = 0 ; k < ar[i].length ; k ++) {
@@ -68,8 +79,7 @@ class BuildingGrid extends Mob {
 	}
 
 	void render() {
-		push();
-		translate(p.p.x,p.p.y,p.p.z);
+		setDraw();
 		cubes.render();
 		for (int i = 0 ; i < ar.length ; i ++) {
 			for (int k = 0 ; k < ar[i].length ; k ++) {
@@ -93,6 +103,7 @@ class BuildingGrid extends Mob {
 		if (taken[z][i] == null) {
 			taken[z][i] = cube;
 			cube.ang.P.set(0,0,0);
+			cube.av.reset(0,0,0);
 			cube.locked = true;
 		}
 	}
@@ -167,6 +178,28 @@ class BuildingGrid extends Mob {
 			}
 		}
 	}
+
+	void lockAllInstant() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			for (int k = 0 ; k < ar[i].length ; k ++) {
+				lock(i,k);
+				taken[i][k].p.reset(ar[i][k]);
+				taken[i][k].ang.reset(0,0,0);
+			}
+		}
+	}
+}
+
+float[][] Wall2DGrid(int x, int y) {
+	float[][] ar = new float[y][];
+	for (int i = 0 ; i < y ; i ++) {
+		ar[i] = new float[x*2];
+		for (int k = 0 ; k < x ; k ++) {
+			ar[i][k*2] = k;
+			ar[i][k*2+1] = 0;
+		}
+	}
+	return ar;
 }
 
 float[] FloorGrid(int col, int row) {

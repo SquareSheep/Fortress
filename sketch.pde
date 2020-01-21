@@ -15,50 +15,79 @@ static String songName = "../Music/fortress.mp3";
 
 IColor defaultFill = new IColor(56,115,207,255);
 IColor defaultStroke = new IColor(232,232,230,255);
+//IColor defaultStroke = new IColor(0,0,0,255);
 
 CubePool cubes;
 Castle castle;
 Tower tower;
+Tower tower2;
 Heart heart;
 
-float tick = 1;
+ArrayList<BuildingGrid> stabs = new ArrayList<BuildingGrid>();
+ArrayList<BuildingGrid> stabs2 = new ArrayList<BuildingGrid>();
+ArrayList<BuildingGrid> piano = new ArrayList<BuildingGrid>();
+ArrayList<BuildingGrid> pulses = new ArrayList<BuildingGrid>();
+ArrayList<BuildingGrid> floaters = new ArrayList<BuildingGrid>();
+
+
 void render() {
-	if (frameCount % tick == 0) {
-		if (frameCount % (castle.nofCubes*2.6*tick) < castle.nofCubes*tick*1) {
-			castle.unlockNext();
-		} else if (frameCount % (castle.nofCubes*2.6*tick) < castle.nofCubes*tick*2) {
-			castle.lockNext();
-		}
-	}
-	cam.ang.P.y += 0.01;
-	
 	if (heart.draw) {
 		heart.p.P.y -= cos(frameCount/60);
 		heart.sca.X = 1+avg/1000;
-		if (timer.beat) heart.sca.x += 0.25;
+		if (timer.beat && heart.beat) heart.sca.x += 0.25;
 		heart.update();
 		heart.render();
 	}
-}
-
-void keyboardInput() {
-
 }
 
 void setSketch() {
 	front = new PVector(de*2,de,de*0.2);
 	back = new PVector(-de*2,-de,-de*2);
 
-	heart = new Heart(new PVector(0,-de*0.5,0), de*0.2);
-
-	castle = new Castle(0,0,0, de*cubeW,9,9);
-	castle.cubes.fillStyleSetM(-1,-1,-1,0);
-	mobs.add(castle);
+	heart = new Heart(new PVector(0,-de*0.89,0), de*0.2);
+	heart.draw = false;
 	
-	tower = new Tower(de,0,0, de*cubeW,5,5);
-	tower.cubes.fillStyleSetM(1,1,-1,0);
-	tower.lockAll();
+	tower = new Tower(-de*0.8,0,de*0.2, de*cubeW,5,5);
+	tower.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
+	tower.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
+	tower.cubes.scaSet(0.003);
+	tower.lockAllInstant();
 	mobs.add(tower);
 
-	tower.cubes.fillStyleSetC(56,115,207,255, 100,-50,50,0);
+	tower2 = new Tower(de*0.8,0,de*0.2, de*cubeW,5,5);
+	tower2.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
+	tower2.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
+	tower2.cubes.scaSet(0.003);
+	tower2.lockAllInstant();
+	mobs.add(tower2);
+	
+	castle = new Castle(0,0,0, de*cubeW,11,11);
+	castle.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
+	castle.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
+	castle.cubes.scaSet(0.003);
+	castle.lockAllInstant();
+	mobs.add(castle);
+
+	stabs.add(new Tower(-de*0.8,0,0, de*cubeW,5,5));
+	stabs.get(stabs.size()-1).cubes.fillStyleSetC(156,115,207,255, 56,115,115,0);
+	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
+	stabs.add(new Tower(de*0,0,0, de*cubeW,5,5));
+	stabs.get(stabs.size()-1).cubes.fillStyleSetC(56,125,57,255, 56,115,115,0);
+	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,-2,0);
+	stabs.add(new Tower(de*0.8,0,0, de*cubeW,5,5));
+	stabs.get(stabs.size()-1).cubes.fillStyleSetC(156,15,107,255, 56,115,115,0);
+	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
+	for (BuildingGrid mob : stabs) {
+		mobs.add(mob);
+	}
+
+	pulses.add(new Wall(0,0,0, de*cubeW, 20,20));
+	pulses.get(0).cubes.fillStyleSetM(1,1,1,0,2,1,1,0);
+	for (BuildingGrid mob : pulses) {
+		mobs.add(mob);
+	}
+
+	for (Entity mob : mobs) {
+		mob.draw = false;
+	}
 }

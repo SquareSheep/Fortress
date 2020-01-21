@@ -14,6 +14,12 @@ class Event {
     this.timeEnding = timeEnd;
   }
 
+  Event (float time, float timeEnding, float timeEnd) {
+    this.time = time;
+    this.timeEnding = timeEnding;
+    this.timeEnd = timeEnd;
+  }
+
   void spawn() {}
   
   void update() {}
@@ -264,6 +270,10 @@ class Point {
   void setM(float x, float y, float z, float index) {
     pm.set(x, y, z);
     this.index = (int)index;
+  }
+
+  void reset(Point other) {
+    reset(other.p.x,other.p.y,other.p.z);
   }
 
   void reset(float x, float y, float z) {
@@ -534,11 +544,17 @@ class BeatTimer {
       beatAlready = false;
     }
   }
+
+  void resetBooleans() {
+    beat = true;
+    beatAlready = true;
+  }
 }
 
 class Camera {
   Point p;
   Point ang;
+  Point av;
   PVector dp;
   PVector dang;
   boolean lock = true;
@@ -550,6 +566,7 @@ class Camera {
     this.dang = new PVector(ax, ay, az);
     this.ang.mass = 10;
     this.ang.vMult = 0.5;
+    this.av = new Point();
   }
 
   Camera(float x, float y, float z) {
@@ -560,9 +577,12 @@ class Camera {
   if (!lock) {
     cam.ang.P.y = (float)mouseX/width*2*PI - PI;
     cam.ang.P.x = -(float)mouseY/height*2*PI - PI;
+  } else {
+    cam.ang.P.add(av.p);
   }
     p.update();
     ang.update();
+    av.update();
   }
 
   void render() {

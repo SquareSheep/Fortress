@@ -34,6 +34,25 @@ class CubePool extends ObjectPool<Cube> {
 		}
 	}
 
+	void scaX(float X) {
+		for (int i = 0 ; i < ar.size() ; i ++) {
+			ar.get(i).sca.X = X;
+		}
+	}
+
+	void scax(float x) {
+		for (int i = 0 ; i < ar.size() ; i ++) {
+			ar.get(i).sca.x = x;
+		}
+	}
+
+	void scaSet(float xm) {
+		for (int i = 0 ; i < ar.size() ; i ++) {
+			ar.get(i).sca.xm = xm;
+			ar.get(i).sca.index = i%binCount;
+		}
+	}
+
 	void fillStyleSetC(float r, float g, float b) {
 		cubeFill.setx(r,g,b,255);
 		for (int i = 0 ; i < ar.size() ; i ++) {
@@ -93,13 +112,14 @@ class Cube extends MobF {
 		strokeStyle.update();
 		if (!locked) {
 			p.P.add(pv.p);
-	   		ang.P.add(av.p);
 		}
+		ang.P.add(av.p);
 	    p.update();
 	    pv.update();
 	    ang.update();
 	    av.update();
 	    w.update();
+	    sca.update();
 	}
 
 	void render() {

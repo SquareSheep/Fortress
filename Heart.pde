@@ -1,6 +1,7 @@
 static float zW = 0.25;
 static float zMult = 0.7;
 class Heart extends Poly {
+	boolean beat = true;
 
 	Heart(PVector p, float w) {
 		super(p, new PVector(0,0,0), w, new float[]{

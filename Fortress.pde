@@ -31,10 +31,10 @@ char keyR;
 char keyP;
 
 void setup() {
-  size(1000,1000,P3D);
+  size(1100,1100,P3D);
   de = (int)(width*0.5+height*0.5);
 
-  cam = new Camera(width*0.5,height*0.75,-de*1.2, -0.35,0,0);
+  cam = new Camera(width*0.5,height*1.1,-de*2.2, -0.35,0,0);
 
   textSize(de/10);
   rectMode(CENTER);
@@ -55,7 +55,8 @@ void setup() {
 }
 
 void draw() {
-  background(232,232,230);
+  //background(232,232,230);
+  background(0);
   cam.render();
   update();
 
@@ -109,8 +110,9 @@ void updateEvents() {
           event.spawned = true;
           event.spawn();
         }
+        if (!event.finished) event.end();
         event.finished = true;
-        event.end();
+        
     }
   }
 }
@@ -152,22 +154,27 @@ void calcFFT() {
   }
 }
 
-void mousePressed() {
-  float temp = ((float)mouseX / width) * song.length();
-  float tempBeat = ((temp+timer.offset)/60000.0*bpm);
-  tempBeat = tempBeat - tempBeat%0.5;
-  println(tempBeat);
+void mousePressed() {}
+
+void setTime(float time) {
+  float beat = ((time-timer.offset)/60000.0*bpm);
+  beat = beat - beat%0.5;
+  setTime(time, beat);
+}
+
+void setTime(float time, float beat) {
   for (Event event : events) {
-    if (tempBeat <= event.time) {
+    if (beat <= event.time) {
       event.spawned = false;
       event.finished = false;
     }
     if (currBeat >= event.time && currBeat < event.timeEnd) {
-      if (tempBeat < event.time || tempBeat >= event.timeEnd) event.end();
+      if (beat < event.time || beat >= event.timeEnd) event.end();
     }
   }
-  song.cue((int)temp);
-  currBeat = tempBeat;
+  song.cue((int)time);
+  currBeat = beat;
+  timer.resetBooleans();
 }
 
 void keyPressed() {
@@ -182,7 +189,7 @@ void keyPressed() {
   } else {
     println("KEY: " + key + " " + currTime + " " + currBeat + " " + frameRate);
     keyP = key;
-  	keyboardInput();
+    keyboardInput();
   }
 }
 

@@ -217,7 +217,7 @@ class LyricStabs extends Event {
 			Cube cube = mob.cubes.get(index);
 			if (!cube.locked) {
 				cube.draw = true;
-				cube.p.reset(random(-de,de),random(-de,de),random(-de,de));
+				cube.p.reset(random(-de,de),random(-de*2,0),random(-de,de));
 				cube.w.p.set(0,0,0);
 				cube.w.v.x += cube.w.P.x;
 				cube.sca.x += 0.5;

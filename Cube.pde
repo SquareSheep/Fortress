@@ -29,7 +29,7 @@ class CubePool extends ObjectPool<Cube> {
 
 	void add(int num, float dx, float av, float pv) {
 		for (int i = 0 ; i < num ; i ++) {
-			add(random(-dx,dx),random(-dx,dx),random(-dx,dx), w, random(-PI,PI),random(-PI,PI),random(-PI,PI));
+			add(random(-dx,dx),random(-dx*2,0),random(-dx,dx), w, random(-PI,PI),random(-PI,PI),random(-PI,PI));
 			Cube cube = getLast();
 			cube.av.reset(random(-av,av),random(-av,av),random(-av,av));
 			cube.pv.reset(random(-pv,pv),random(-pv,pv),random(-pv,pv));

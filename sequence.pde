@@ -8,13 +8,14 @@ void addEvents() {
 	events.add(new LockGridCubes(67,24,castle,castle.cubes.arm,false));
 
 	events.add(new GridCubeFillStyleSetC(33,castle,56,115,207,255, 56,115,115,0));
-	events.add(new GridCubeFillStyleSetC(37,castle,156,115,207,255, 56,115,115,0));
+	events.add(new GridCubeFillStyleSetC(37,castle,100,151,105,255, 56,115,115,0));
 	events.add(new GridCubeFillStyleSetC(41,castle,156,156,55,255, 56,115,115,0));
 	events.add(new GridCubeFillStyleSetC(45,castle,222,55,100,255, 56,115,115,0));
 	events.add(new GridCubeFillStyleSetC(49,castle,56,115,207,255, 56,115,115,0));
-	events.add(new GridCubeFillStyleSetC(53,castle,156,115,207,255, 56,115,115,0));
+	events.add(new GridCubeFillStyleSetC(53,castle,100,151,105,255, 56,115,115,0));
 	events.add(new GridCubeFillStyleSetC(57,castle,156,156,55,255, 56,115,115,0));
 	events.add(new GridCubeFillStyleSetC(61,castle,222,55,100,255, 56,115,115,0));
+	events.add(new GridCubeFillStyleSetC(65,castle,56,115,207,255, 56,115,115,0));
 
 	events.add(new SetDraws(93,false,true,false));
 	//events.add(new GlobalWavePattern(93));

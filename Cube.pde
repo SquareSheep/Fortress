@@ -1,4 +1,6 @@
 static float cubeW = 0.1;
+float cubeSpawnPv = 4;
+float cubeSpawnAv = 0.04;
 class CubePool extends ObjectPool<Cube> {
 	IColor cubeFill = defaultFill.copy();
 	IColor cubeStroke = defaultStroke.copy();
@@ -32,6 +34,10 @@ class CubePool extends ObjectPool<Cube> {
 			cube.av.reset(random(-av,av),random(-av,av),random(-av,av));
 			cube.pv.reset(random(-pv,pv),random(-pv,pv),random(-pv,pv));
 		}
+	}
+
+	void add(int num, float dx) {
+		add(num, dx, cubeSpawnAv, cubeSpawnPv);
 	}
 
 	void scaX(float X) {
@@ -112,8 +118,8 @@ class Cube extends MobF {
 		strokeStyle.update();
 		if (!locked) {
 			p.P.add(pv.p);
+			ang.P.add(av.p);
 		}
-		ang.P.add(av.p);
 	    p.update();
 	    pv.update();
 	    ang.update();

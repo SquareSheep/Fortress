@@ -53,8 +53,8 @@ Melody:
 340 End
 
 */
-// DRAW EVENTS
 
+// MAIN EVENTS
 int[][] melody = new int[][]{
 	new int[]{3,13,23,33,42,53,61,72,83,102,112},
 	new int[]{5,14,23,35,57,67,78,96,115,123},
@@ -176,6 +176,61 @@ class MelodyStabs extends Event {
 	}
 }
 
+class LyricStabs extends Event {
+	BuildingGrid mob;
+	int start; int curr;
+	int index; int num;
+
+	LyricStabs(float time, BuildingGrid mob, int index, int num) {
+		super(time, time+1);
+		this.mob = mob;
+		this.index = index%mob.cubes.arm;
+		this.num = num;
+	}
+
+	void spawn() {
+		start = frameCount;
+	}
+
+	void update() {
+		curr = frameCount - start;
+		switch(curr) {
+			case 5:
+			spawnCubes();
+			break;
+			case 15:
+			spawnCubes();
+			break;
+			case 25:
+			spawnCubes();
+			break;
+			case 30:
+			spawnCubes();
+			break;
+		}
+	}
+
+	void spawnCubes() {
+		int count = 0;
+		float pAmp;
+		while (count < num) {
+			Cube cube = mob.cubes.get(index);
+			if (!cube.locked) {
+				cube.draw = true;
+				cube.p.reset(random(-de,de),random(-de,de),random(-de,de));
+				cube.w.p.set(0,0,0);
+				cube.w.v.x += cube.w.P.x;
+				cube.sca.x += 0.5;
+				pAmp = cube.w.P.x;
+				cube.p.P.add(random(-pAmp,pAmp),random(-pAmp,pAmp),random(-pAmp,pAmp));
+				cube.ang.P.add(random(-PI,PI),random(-PI,PI),random(-PI,PI));
+			}
+			count ++;
+			index = (index+1)%mob.cubes.arm;
+		}
+	}
+}
+
 class Pulses extends Event {
 
 	BuildingGrid mob;
@@ -216,6 +271,37 @@ class Pulses extends Event {
 	}
 }
 
+class LockGridCubes extends Event {
+	int num;
+	BuildingGrid mob;
+	boolean lock;
+	int count;
+	int tick = 1;
+
+	LockGridCubes(float time, float timeEnd, BuildingGrid mob, int num, boolean lock) {
+		super(time,time+timeEnd);
+		this.mob = mob;
+		this.num = num;
+		this.lock = lock;
+	}
+
+	void spawn() {
+		count = 0;
+	}
+
+	void update() {
+		if (frameCount % tick == 0 && count < num) {
+			if (lock) {
+				mob.lockNext();
+			} else {
+				mob.unlockNext();
+			}
+			count ++;
+		}
+	}
+}
+
+// SETDRAW EVENTS
 class SetDraws extends Event {
 	boolean heartDraw;
 	boolean castleDraw;
@@ -240,23 +326,24 @@ class SetDraws extends Event {
 	}
 }
 
-class SetFloating extends Event {
-	int[] ar;
+class SetGridCubeDraw extends Event {
+	BuildingGrid mob;
+	boolean gridDraw;
+	boolean cubeDraw;
+	int index;
 
-	SetFloating(float time, float timeEnd, int[] ar) {
-		super(time, timeEnd);
-		this.ar = ar;
+	SetGridCubeDraw(float time, BuildingGrid mob, boolean gridDraw, boolean cubeDraw) {
+		super(time, time+1);
+		this.gridDraw = gridDraw;
+		this.cubeDraw = cubeDraw;
+		this.index = index;
+		this.mob = mob;
 	}
 
 	void spawn() {
-		for (int i = 0 ; i < ar.length ; i ++) {
-			floaters.get(ar[i]).draw = true;
-		}
-	}
-
-	void end() {
-		for (int i = 0 ; i < ar.length ; i ++) {
-			floaters.get(ar[i]).draw = false;
+		mob.draw = gridDraw;
+		for (int i = 0 ; i < mob.cubes.arm ; i ++) {
+			mob.cubes.get(i).draw = cubeDraw;
 		}
 	}
 }
@@ -293,6 +380,40 @@ class AllCubesFillStyleSetC extends Event {
 		for (Entity mob : mobs) {
 			((BuildingGrid)mob).cubes.fillStyleSetC(r,g,b,a,rr,gr,br,aa);
 		}
+	}
+}
+
+class GridCubeFillStyleSetM extends Event {
+	float r,g,b,a;
+	float rr,gr,br,aa;
+	BuildingGrid mob;
+
+	GridCubeFillStyleSetM(float time, BuildingGrid mob, float r, float g, float b, float a, float rr, float gr, float br, float aa) {
+		super(time, time+1);
+		this.mob = mob;
+		this.r = r; this.g = g; this.b = b; this.a = a;
+		this.rr = rr; this.gr = gr; this.br = br; this.aa = aa;
+	}
+
+	void spawn() {
+		mob.cubes.fillStyleSetM(r,g,b,a,rr,gr,br,aa);
+	}
+}
+
+class GridCubeFillStyleSetC extends Event {
+	float r,g,b,a;
+	float rr,gr,br,aa;
+	BuildingGrid mob;
+
+	GridCubeFillStyleSetC(float time, BuildingGrid mob, float r, float g, float b, float a, float rr, float gr, float br, float aa) {
+		super(time, time+1);
+		this.mob = mob;
+		this.r = r; this.g = g; this.b = b; this.a = a;
+		this.rr = rr; this.gr = gr; this.br = br; this.aa = aa;
+	}
+
+	void spawn() {
+		mob.cubes.fillStyleSetC(r,g,b,a,rr,gr,br,aa);
 	}
 }
 

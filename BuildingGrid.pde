@@ -15,7 +15,7 @@ class Tower extends BuildingGrid {
 			FloorGrid(col,row),
 		}, col*0.5-0.5,12,row*0.5-0.5);
 		nofCubes = col*row + (col*2+row*2-2)*10 + (col+row-1);
-		cubes.add(nofCubes, w*(col+row)/2, 0.03,3);
+		cubes.add(nofCubes, w*(col+row)/2);
 	}
 }
 
@@ -32,7 +32,7 @@ class Castle extends BuildingGrid {
 			FloorGrid(col,row),
 		}, col*0.5-0.5,8,row*0.5-0.5);
 		nofCubes = col*row + (col*2+row*2-2)*6 + (col+row-1);
-		cubes.add(nofCubes, w*(col+row)/2, 0.03,3);
+		cubes.add(nofCubes, w*(col+row)/2);
 	}
 }
 
@@ -40,7 +40,7 @@ class Wall extends BuildingGrid {
 	Wall(float x, float y, float z, float w, int col, int row) {
 		super(x,y,z, w, Wall2DGrid(col,row), col*0.5-0.5,row*0.5-0.5,0);
 		nofCubes = col*row;
-		cubes.add(nofCubes,w*(col+row)/2, 0.03,3);
+		cubes.add(nofCubes,w*(col+row)/2);
 	}
 }
 
@@ -103,19 +103,22 @@ class BuildingGrid extends Mob {
 		if (taken[z][i] == null) {
 			taken[z][i] = cube;
 			cube.ang.P.set(0,0,0);
-			cube.av.reset(0,0,0);
 			cube.locked = true;
 		}
 	}
 
-	void lock(int z, int i) {
+	boolean lock(int z, int i) {
 		int k = 0;
 		Cube cube;
 		do {
 			cube = cubes.ar.get(k);
 			k ++;
-		} while (k < cubes.arm && cube.locked);
-		if (!cube.locked) lock(cube,z,i);
+		} while (k < cubes.arm && (cube.locked || !cube.draw));
+		if (!cube.locked && cube.draw) {
+			lock(cube,z,i);
+			return true;
+		}
+		return false;
 	}
 
 	void lockNext() {
@@ -182,9 +185,10 @@ class BuildingGrid extends Mob {
 	void lockAllInstant() {
 		for (int i = 0 ; i < ar.length ; i ++) {
 			for (int k = 0 ; k < ar[i].length ; k ++) {
-				lock(i,k);
-				taken[i][k].p.reset(ar[i][k]);
-				taken[i][k].ang.reset(0,0,0);
+				if (lock(i,k)) {
+					taken[i][k].p.reset(ar[i][k]);
+					taken[i][k].ang.reset(0,0,0);
+				}
 			}
 		}
 	}

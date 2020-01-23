@@ -46,7 +46,7 @@ void setSketch() {
 	back = new PVector(-de*2,-de,-de*2);
 
 	heart = new Heart(new PVector(0,-de*0.89,0), de*0.2);
-	heart.draw = false;
+	heart.draw = true;
 	
 	tower = new Tower(-de*0.8,0,de*0.2, de*cubeW,5,5);
 	tower.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
@@ -62,8 +62,8 @@ void setSketch() {
 	tower2.lockAllInstant();
 	mobs.add(tower2);
 	
-	castle = new Castle(0,0,0, de*cubeW,5,5); // 11,11
-	castle.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
+	castle = new Castle(0,0,0, de*cubeW,11,11); // 11,11
+	castle.cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);
 	castle.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	castle.cubes.scaSet(0.003);
 	//castle.lockAllInstant();
@@ -79,6 +79,13 @@ void setSketch() {
 	stabs.get(stabs.size()-1).cubes.fillStyleSetC(156,15,107,255, 56,115,115,0);
 	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
 	for (BuildingGrid mob : stabs) {
+		mobs.add(mob);
+	}
+
+	stabs2.add(new Tower(-de*0.8,0,0, de*cubeW,5,5));
+	stabs2.get(stabs2.size()-1).cubes.fillStyleSetC(156,115,207,255, 56,115,115,0);
+	stabs2.get(stabs2.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
+	for (BuildingGrid mob : stabs2) {
 		mobs.add(mob);
 	}
 

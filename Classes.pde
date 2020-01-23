@@ -67,7 +67,7 @@ abstract class ObjectPool<T extends Entity> extends Entity {
 
   void render() {
     for (int i = 0 ; i < arm ; i ++) {
-      ar.get(i).render();
+      if (ar.get(i).draw) ar.get(i).render();
     }
   }
 

@@ -1,59 +1,3 @@
-/*
-Fortress is in 4/4. Most events take 4 beats or 1 beat
-
-Manipulate color gradients. Push cubes around in wave patterns.
-Spin cubes and extend them into lasers. Form and break buildings.
-
-SetDraws:
-- Heart
-- Castle + towers
-- Floating cubes
-- Floating towers
-Everything else's draw boolean is controlled by their specific events.
-Stabs, pulses, build up are separate.
-
-Event types: 
-- Draw (stabs, melody, setdraw, etc)
-- Color (cubes.fillStyleSetC, setM, etc)
-- Pattern (making wave-like patterns with BuildingGrids' p values)
-
-Quiet:
-- Floating cubes
-- Built or half-built castles, towers
-- Slow camera rotation
-
-Melody stabs:
-- Three castle walls breaking in succession
-
-Lyric stabs:
-- Cubes spawning out of air. Form buildings when lyrics occur
-
-Piano notes:
-- Cubes spawning out of air, then drifting
-
-Mid-melody pulses:
-- Color gradient-changing wall
-
-Build up:
-- Use wave pattern events that push cubes around
-- Increases in frequency with build up
-
-Melody:
-- Spinning cube lasers
-
-
-156-159 4x cymbals
-
-192-223 Quiet
-224-239 Buildup
-240-51 Buildup 2x
-251- Peak
-284-287 4x cymbals
-316-319 4x cymbals
-340 End
-
-*/
-
 // MAIN EVENTS
 int[][] melody = new int[][]{
 	new int[]{3,13,23,33,42,53,61,72,83,102,112},
@@ -61,8 +5,7 @@ int[][] melody = new int[][]{
 	new int[]{1,11,22,32,53,62,72,83,103,113},
 	new int[]{1,10,22,31,52,62,73,83,102,112},
 	new int[]{8,18,29,40,59,80,98,119,130},
-	new int[]{2,11,21,30,49,59,68,78,98,107}
-};
+	new int[]{2,11,21,30,49,59,68,78,98,107}};
 class Melody1 extends Event {
 	int start;
 	int curr;
@@ -302,27 +245,18 @@ class LockGridCubes extends Event {
 }
 
 // SETDRAW EVENTS
-class SetDraws extends Event {
-	boolean heartDraw;
-	boolean castleDraw;
-	boolean towerDraw;
+class SetEntityDraw extends Event {
+	Entity mob;
+	boolean entityDraw;
 
-	SetDraws(float time, boolean heartDraw, boolean castleDraw, boolean towerDraw) {
+	SetEntityDraw(float time, Entity mob, boolean entityDraw) {
 		super(time, time+1);
-		this.heartDraw = heartDraw;
-		this.castleDraw = castleDraw;
-		this.towerDraw = towerDraw;
-	}
-
-	SetDraws(float time, boolean boo) {
-		this(time, boo,boo,boo);
+		this.mob = mob;
+		this.entityDraw = entityDraw;
 	}
 
 	void spawn() {
-		castle.draw = castleDraw;
-		tower.draw = towerDraw;
-		tower2.draw = towerDraw;
-		heart.draw = heartDraw;
+		mob.draw = entityDraw;
 	}
 }
 
@@ -330,14 +264,16 @@ class SetGridCubeDraw extends Event {
 	BuildingGrid mob;
 	boolean gridDraw;
 	boolean cubeDraw;
-	int index;
 
 	SetGridCubeDraw(float time, BuildingGrid mob, boolean gridDraw, boolean cubeDraw) {
 		super(time, time+1);
 		this.gridDraw = gridDraw;
 		this.cubeDraw = cubeDraw;
-		this.index = index;
 		this.mob = mob;
+	}
+
+	SetGridCubeDraw(float time, BuildingGrid mob, boolean gridDraw) {
+		this(time, mob, gridDraw, gridDraw);
 	}
 
 	void spawn() {

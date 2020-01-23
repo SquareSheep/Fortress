@@ -17,7 +17,7 @@ IColor defaultFill = new IColor(56,115,207,255);
 IColor defaultStroke = new IColor(232,232,230,255);
 
 CubePool cubes;
-Castle castle;
+Tower castle;
 Tower tower;
 Tower tower2;
 Heart heart;
@@ -38,7 +38,6 @@ void render() {
 		heart.update();
 		heart.render();
 	}
-	cam.ang.P.y += cos((float)frameCount/130)*0.004;
 }
 
 void setSketch() {
@@ -48,41 +47,41 @@ void setSketch() {
 	heart = new Heart(new PVector(0,-de*0.89,0), de*0.2);
 	heart.draw = true;
 	
-	tower = new Tower(-de*0.8,0,de*0.2, de*cubeW,5,5);
+	tower = new Tower(-de*0.8,0,de*0.2, de*cubeW,5,5, 10);
 	tower.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
 	tower.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	tower.cubes.scaSet(0.003);
 	tower.lockAllInstant();
 	mobs.add(tower);
 
-	tower2 = new Tower(de*0.8,0,de*0.2, de*cubeW,5,5);
+	tower2 = new Tower(de*0.8,0,de*0.2, de*cubeW,5,5, 10);
 	tower2.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
 	tower2.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	tower2.cubes.scaSet(0.003);
 	tower2.lockAllInstant();
 	mobs.add(tower2);
 	
-	castle = new Castle(0,0,0, de*cubeW,11,11); // 11,11
+	castle = new Tower(0,0,0, de*cubeW,11,11, 8); // 11,11
 	castle.cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);
 	castle.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	castle.cubes.scaSet(0.003);
 	//castle.lockAllInstant();
 	mobs.add(castle);
 
-	stabs.add(new Tower(-de*0.8,0,0, de*cubeW,5,5));
+	stabs.add(new Tower(-de*0.8,0,0, de*cubeW,5,5, 10));
 	stabs.get(stabs.size()-1).cubes.fillStyleSetC(156,115,207,255, 56,115,115,0);
 	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
-	stabs.add(new Tower(de*0,0,0, de*cubeW,5,5));
+	stabs.add(new Tower(de*0,0,0, de*cubeW,5,5, 10));
 	stabs.get(stabs.size()-1).cubes.fillStyleSetC(56,125,57,255, 56,115,115,0);
 	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,-2,0);
-	stabs.add(new Tower(de*0.8,0,0, de*cubeW,5,5));
+	stabs.add(new Tower(de*0.8,0,0, de*cubeW,5,5, 10));
 	stabs.get(stabs.size()-1).cubes.fillStyleSetC(156,15,107,255, 56,115,115,0);
 	stabs.get(stabs.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
 	for (BuildingGrid mob : stabs) {
 		mobs.add(mob);
 	}
 
-	stabs2.add(new Tower(-de*0.8,0,0, de*cubeW,5,5));
+	stabs2.add(new Tower(-de*0.8,0,0, de*cubeW,5,5, 10));
 	stabs2.get(stabs2.size()-1).cubes.fillStyleSetC(156,115,207,255, 56,115,115,0);
 	stabs2.get(stabs2.size()-1).cubes.fillStyleSetM(1,1,1,0, -1,1,2,0);
 	for (BuildingGrid mob : stabs2) {
@@ -95,7 +94,7 @@ void setSketch() {
 		mobs.add(mob);
 	}
 
-	notes.add(new Tower(0,0,0, de*cubeW, 5,5));
+	notes.add(new Tower(0,0,0, de*cubeW, 5,5,10));
 	notes.get(0).cubes.fillStyleSetC(75,155,55,255, 56,115,115,0);
 	notes.get(0).cubes.fillStyleSetM(1,1,1,0,2,1,1,0);
 	notes.get(0).lockAllInstant();

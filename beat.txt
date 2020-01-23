@@ -1,3 +1,56 @@
+/*
+Intro:
+- Floating cubes, drifting upward
+- Rotating heart, not beating
+- Camera pans slowly
+- Switch to another camera angle with each piano chord
+
+Intro to Lyrics riser:
+- Increase floating cubes' rotation speeds and upward speeds
+- Increase heart's rotation speed
+- When the first stab hits, shrink all remaining cubes
+
+Lyric section "Building ... I thought we were better":
+- Stabs:
+	- Cubes appear out of air
+- Lyrics:
+	- Cubes assemble into building
+
+Lyric section "We can try ... and we can feel nothing":
+- The tower that was just built breaks up and cubes fly away
+- 
+
+Lyric section "And I know ... help me to break through":
+
+Melody section: 
+- Stabs:
+	- Cut to separate scene of three buildings exploding in succession
+- Notes:
+	- Spinning cube lasers
+- Slowly rotating scene of the heart inside a castle
+
+Pulses:
+- 
+
+Melody section 2: 
+- Stabs:
+	- Cut to separate scene of three buildings exploding in succession
+- Notes:
+	- Spinning cube lasers
+- Slowly rotating scene of the heart inside a castle
+
+Pulses 2:
+- 
+
+Lyric section "We can try ... help me to break through":
+- 4x piano notes:
+	- Cube lasers appearing out of air
+- The heart is fixed, everything else is moving away from the camera into the distance
+- Buildings being built or dismantled pass by with each beat
+
+Lyric section "Moving pictures ... Just let it consume us":
+- Similar to intro
+*/
 92 0.0
 789 1.0
 1486 2.0

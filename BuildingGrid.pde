@@ -1,37 +1,7 @@
 class Tower extends BuildingGrid {
-	Tower(float x, float y, float z, float w, int col, int row) {
-		super(x,y,z, w, new float[][]{
-			ParapetGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			FloorGrid(col,row),
-		}, col*0.5-0.5,12,row*0.5-0.5);
-		nofCubes = col*row + (col*2+row*2-2)*10 + (col+row-1);
-		cubes.add(nofCubes, w*(col+row)/2);
-	}
-}
-
-class Castle extends BuildingGrid {
-	Castle(float x, float y, float z, float w, int col, int row) {
-		super(x,y,z, w, new float[][]{
-			ParapetGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			WallGrid(col,row),
-			FloorGrid(col,row),
-		}, col*0.5-0.5,8,row*0.5-0.5);
-		nofCubes = col*row + (col*2+row*2-2)*6 + (col+row-1);
+	Tower(float x, float y, float z, float w, int col, int row, int num) {
+		super(x,y,z, w, TowerGrid(col, row, num), col*0.5-0.5,8,row*0.5-0.5);
+		nofCubes = col*row + (col*2+row*2-2)*(num-2) + (col+row-1);
 		cubes.add(nofCubes, w*(col+row)/2);
 	}
 }
@@ -192,6 +162,16 @@ class BuildingGrid extends Mob {
 			}
 		}
 	}
+}
+
+float[][] TowerGrid(int col, int row, int y) {
+	float[][] ar = new float[y][];
+	ar[0] = ParapetGrid(col, row);
+	for (int i = 1 ; i < y-1 ; i ++) {
+		ar[i] = WallGrid(col, row);
+	}
+	ar[y-1] = FloorGrid(col, row);
+	return ar;
 }
 
 float[][] Wall2DGrid(int x, int y) {

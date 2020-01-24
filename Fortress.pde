@@ -62,10 +62,8 @@ void draw() {
 
   render();
   
-  for (Entity mob : mobs) {
-    if (mob.draw) {
-      mob.render();
-    }
+  for (BuildingGrid mob : mobs) {
+    if (mob.draw) mob.render();
   }
 
   fill(255);
@@ -110,7 +108,10 @@ void updateEvents() {
           event.spawned = true;
           event.spawn();
         }
-        if (!event.finished) event.end();
+        if (!event.finished) {
+          event.end();
+          println(frameCount);
+        }
         event.finished = true;
         
     }

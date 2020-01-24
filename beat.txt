@@ -1,9 +1,11 @@
 /*
-Intro:
+Right now, mobs.update() updates every mob even if they aren't being drawn. Is this a problem?
+
+Intro section:
 - Floating cubes, drifting upward
 - Rotating heart, not beating
 - Camera pans slowly
-- Switch to another camera angle with each piano chord
+- More cubes appear out of air with each piano chord
 
 Intro to Lyrics riser:
 - Increase floating cubes' rotation speeds and upward speeds

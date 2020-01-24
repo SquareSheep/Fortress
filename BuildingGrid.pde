@@ -1,6 +1,6 @@
 class Tower extends BuildingGrid {
 	Tower(float x, float y, float z, float w, int col, int row, int num) {
-		super(x,y,z, w, TowerGrid(col, row, num), col*0.5-0.5,8,row*0.5-0.5);
+		super(x,y,z, w, TowerGrid(col, row, num), col*0.5-0.5,num,row*0.5-0.5);
 		nofCubes = col*row + (col*2+row*2-2)*(num-2) + (col+row-1);
 		cubes.add(nofCubes, w*(col+row)/2);
 	}
@@ -110,14 +110,29 @@ class BuildingGrid extends Mob {
 		}
 	}
 
-	void unlock(int z, int i) {
-		if (taken[z][i] != null) {
-			taken[z][i].locked = false;
-			taken[z][i] = null;
+	Cube unlock(Cube cube) {
+		for (int i = 0 ; i < taken.length ; i ++) {
+			for (int k = 0 ; k < taken[i].length ; k ++) {
+				if (cube == taken[i][k]) {
+					return unlock(i,k);
+				}
+			}
 		}
+		return null;
 	}
 
-	void unlockNext() {
+	Cube unlock(int z, int i) {
+		Cube cube;
+		if (taken[z][i] != null) {
+			taken[z][i].locked = false;
+			cube = taken[z][i];
+			taken[z][i] = null;
+			return cube;
+		}
+		return null;
+	}
+
+	Cube unlockNext() {
 		if (currZ == -1) {
 			currZ ++;
 			currI = taken[currZ].length-1;
@@ -131,9 +146,10 @@ class BuildingGrid extends Mob {
 				}
 			}
 			if (currZ < taken.length) {
-				unlock(currZ, currI);
+				return unlock(currZ, currI);
 			}
 		}
+		return null;
 	}
 
 	void unlockAll() {
@@ -142,6 +158,8 @@ class BuildingGrid extends Mob {
 				unlock(i,k);
 			}
 		}
+		currZ = taken.length;
+		currI = 0;
 	}
 
 	void lockAll() {
@@ -150,6 +168,8 @@ class BuildingGrid extends Mob {
 				lock(i,k);
 			}
 		}
+		currZ = 0;
+		currI = taken[currZ].length-1;
 	}
 
 	void lockAllInstant() {
@@ -161,6 +181,8 @@ class BuildingGrid extends Mob {
 				}
 			}
 		}
+		currZ = 0;
+		currI = taken[currZ].length-1;
 	}
 }
 

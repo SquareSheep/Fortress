@@ -207,6 +207,11 @@ abstract class Mob extends Entity {
   abstract void render();
 }
 
+abstract class EntityF extends Entity {
+  abstract void fillStyleSetC(float r, float g, float b, float a);
+  abstract void fillStyleSetM(float r, float g, float b, float a);
+}
+
 abstract class Entity {
   boolean finished = false;
   boolean draw = true;

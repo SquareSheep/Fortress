@@ -40,6 +40,34 @@ class CubePool extends ObjectPool<Cube> {
 		add(num, dx, cubeSpawnAv, cubeSpawnPv);
 	}
 
+	void nextCubeAppear() {
+		nextCubeAppear(0);
+	}
+
+	void nextCubeAppear(int index) {
+		int k = index;
+		while (k < arm && ar.get(k).draw) {
+			k ++;
+		}
+		if (k < arm && !ar.get(k).locked) {
+			Cube cube = ar.get(k);
+			cube.draw = true;
+			cube.p.reset(random(-de,de),random(-de*2,0),random(-de,de));
+			cube.w.p.set(0,0,0);
+			cube.w.v.x += cube.w.P.x;
+			cube.sca.x += 1;
+			float pAmp = cube.w.P.x;
+			cube.p.P.add(random(-pAmp,pAmp),random(-pAmp,pAmp),random(-pAmp,pAmp));
+			cube.ang.P.add(random(-PI,PI),random(-PI,PI),random(-PI,PI));
+		}
+	}
+
+	void setDraw(boolean boo) {
+		for (int i = 0 ; i < ar.size() ; i ++) {
+			ar.get(i).draw = boo;
+		}
+	}
+
 	void scaX(float X) {
 		for (int i = 0 ; i < ar.size() ; i ++) {
 			ar.get(i).sca.X = X;

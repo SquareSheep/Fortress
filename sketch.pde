@@ -14,7 +14,8 @@ static float volumeGain = -10;
 static String songName = "../Music/fortress.mp3";
 
 IColor defaultFill = new IColor(56,115,207,255);
-IColor defaultStroke = new IColor(232,232,230,255);
+//IColor defaultStroke = new IColor(232,232,230,255);
+IColor defaultStroke = new IColor(0,0,0,255);
 
 CubePool cubes;
 Tower castle;
@@ -25,6 +26,7 @@ Tower[] towers = new Tower[4];
 ArrayList<BuildingGrid> stabs = new ArrayList<BuildingGrid>();
 
 void render() {
+	if (timer.beat) println(frameCount + " " + currBeat);
 	if (heart.draw) {
 		heart.p.P.y -= cos(frameCount/60);
 		heart.sca.X = 1+avg/1000;
@@ -32,6 +34,8 @@ void render() {
 		heart.update();
 		heart.render();
 	}
+	defaultStroke.update();
+	defaultStroke.strokeStyle();
 }
 
 void setSketch() {

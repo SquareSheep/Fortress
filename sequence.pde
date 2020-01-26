@@ -2,31 +2,42 @@ void addEvents() {
 	// Intro section
 	float cameraAngle = -0.2;
 	events.add(new SetEntityDraw(0,heart,true));
-	events.add(new SetGridCubeDraw(0,castle,true));
+	events.add(new SetGridCubeDraw(0,castle,true,false));
 	events.add(new SetHeartBeat(0,false));
 	events.add(new CameraSetP(0, cameraAngle,0,0));
-	events.add(new CameraSetAv(0, 0,0.002,0));
+	events.add(new CameraSetAv(0, 0,-0.002,0));
+
+	events.add(new GridCubesAppear(1,castle,10));
+	events.add(new GridCubesAppear(5,castle,10));
+	events.add(new GridCubesAppear(9,castle,10));
+	events.add(new GridCubesAppear(13,castle,10));
+	events.add(new GridCubesAppearNotes(17,19,castle,10, new int[]{8,16,23}));
+	events.add(new GridCubesAppearNotes(20,22,castle,10, new int[]{31,50}));
+	events.add(new GridCubesAppearNotes(24,26,castle,10, new int[]{1772-1743,1795-1743,1814-1743}));
+	events.add(new GridCubesAppear(29,castle,10));
 
 	// Lyric section "Building ... I thought we were better"
-	events.add(new CameraSetP(33, cameraAngle,0,0));
+	events.add(new CameraSetAv(66,0,0.003,0));
 	events.add(new SetGridCubeDraw(33,castle,true,false));
 	for (int i = 0 ; i < 7 ; i ++) {
-		events.add(new LyricStabs(33+i*4, castle, i*48,12));
+		events.add(new GridCubesAppearNotes(33+i*4,35+i*4,castle,12, new int[]{5,15,25,30}));
 		events.add(new LockGridCubes(35+i*4,4, castle, 48,true));
 	}
-	events.add(new LyricStabs(33+7*4, castle, 7*48,15));
-	events.add(new LockGridCubes(34+7*4,4, castle, 60,true));
+	events.add(new GridCubesAppearNotes(33+7*4,35+7*4,castle,15, new int[]{5,15,25,30}));
+	events.add(new LockGridCubes(35+7*4,4, castle, 60,true));
 
 	// Lyric section "We can try ... and we can feel nothing"
-	events.add(new CameraSetAv(66,0,0,0));
-	//events.add(new CameraSetP(66,cameraAngle,0,0));
+	events.add(new CameraSetAv(66,0,-0.002,0));
 	events.add(new LockGridCubes(66,24, castle,false));
 
 	// Lyric section "And I know ... help me to break through"
 	for (int i = 0 ; i < 12 ; i ++) {
-		events.add(new GridSetAv(81+i,castle, 0,0.003+i*0.01,0));
-		events.add(new GridCubesAddPv(81+i,castle, 0.3,-2));
+		events.add(new GridSetAv(80+i,castle, 0,0.003+i*0.003,0));
+		events.add(new GridCubesAddPv(81+i,castle, 0.03,0));
 	}
+	events.add(new GridCubesSetP(93,castle,0));
+	events.add(new GridSetAv(93,castle, 0,-0.3,0));
+	events.add(new GridCubesAddPv(93,castle, -100,0));
 
 	events.add(new SetEntityDraw(97, castle, false));
 
@@ -52,6 +63,10 @@ void addEvents() {
 	events.add(new GridSetAng(125,castle,0,0,0));
 	events.add(new GridSetAv(125,castle,0,0,0));
 	events.add(new Pulses(125,castle));
+	events.add(new FillStyleSetC(125,defaultStroke,232,232,230,255));
+	events.add(new FillStyleSetC(126,defaultStroke,0,0,0,255));
+	events.add(new FillStyleSetC(127,defaultStroke,232,232,230,255));
+	events.add(new FillStyleSetC(128,defaultStroke,0,0,0,255));
 	for (int i = 0 ; i < towers.length ; i ++) {
 		events.add(new Pulses(125,towers[i]));
 		events.add(new SetGridCubeDraw(125,towers[i],true,true));

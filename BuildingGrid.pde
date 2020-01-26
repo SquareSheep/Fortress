@@ -1,6 +1,6 @@
 class Tower extends BuildingGrid {
 	Tower(float x, float y, float z, float w, int col, int row, int num) {
-		super(x,y,z, w, TowerGrid(col, row, num), col*0.5-0.5,num,row*0.5-0.5);
+		super(x,y,z, w, TowerGrid(col, row, num), col,row);
 		nofCubes = col*row + (col*2+row*2-2)*(num-2) + (col+row-1);
 		cubes.add(nofCubes, w*(col+row)/2);
 	}
@@ -8,9 +8,10 @@ class Tower extends BuildingGrid {
 
 class Wall extends BuildingGrid {
 	Wall(float x, float y, float z, float w, int col, int row) {
-		super(x,y,z, w, Wall2DGrid(col,row), col*0.5-0.5,row*0.5-0.5,0);
+		super(x,y,z, w, Wall2DGrid(col,row), col,1);
 		nofCubes = col*row;
 		cubes.add(nofCubes,w*(col+row)/2);
+		pillar = false;
 	}
 }
 
@@ -21,13 +22,21 @@ class BuildingGrid extends Mob {
 	int nofCubes;
 	int currI = 0;
 	int currZ;
+	int col,row;
+	boolean pillar = true;
+	IColor fillStyle = defaultFill.copy();
 
-	BuildingGrid(float x, float y, float z, float w, float[][] ar, float dx, float dy, float dz) {
+	BuildingGrid(float x, float y, float z, float w, float[][] ar, int col, int row) {
 		this.p = new Point(x,y,z);
 		this.ang = new Point();
 		cubes.w = w;
+		this.w = (float)(col+row)/2*w;
 		this.ar = new Point[ar.length][];
 		this.taken = new Cube[this.ar.length][];
+		this.col = col; this.row = row;
+		float dx = col*0.5-0.5;
+		float dz = row*0.5-0.5;
+		float dy = ar.length;
 		for (int i = 0 ; i < this.ar.length ; i ++) {
 			this.ar[i] = new Point[ar[i].length/2];
 			this.taken[i] = new Cube[this.ar[i].length];
@@ -46,6 +55,7 @@ class BuildingGrid extends Mob {
 				ar[i][k].update();
 			}
 		}
+		fillStyle.update();
 	}
 
 	void render() {
@@ -56,17 +66,13 @@ class BuildingGrid extends Mob {
 				if (taken[i][k] != null) taken[i][k].p.P.set(ar[i][k].p.x,ar[i][k].p.y,ar[i][k].p.z);
 			}
 		}
-		pop();
-	}
-
-	void renderPoints() {
-		stroke(255);
-		strokeWeight(5);
-		for (int i = 0 ; i < ar.length ; i ++) {
-			for (int k = 0 ; k < ar[i].length ; k ++) {
-				point(ar[i][k].p.x,ar[i][k].p.y,ar[i][k].p.z);
-			}
+		if (pillar) {
+			translate(0,de-cubes.w/2,0);
+			fillStyle.fillStyle();
+			defaultStroke.strokeStyle();
+			box(w*1.2,de*2,w*1.2);
 		}
+		pop();
 	}
 
 	void lock(Cube cube, int z, int i) {

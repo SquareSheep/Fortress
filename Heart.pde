@@ -20,7 +20,8 @@ class Heart extends Poly {
 			new int[]{16,17,18,19,20,21,22,23}
 		});
 		for (int i = 0 ; i < fillStyle.length ; i ++) {
-			fillStyle[i].reset(255-i*5,80-i*2,80-i*2,200,2,-5,-5,-1.25,((float)i/fillStyle.length*binCount+50)%binCount);
+			fillStyle[i].reset(255-i*5,80-i*2,80-i*2,255,2,-5,-5,-2.25,((float)i/fillStyle.length*binCount+50)%binCount);
+			strokeStyle[i] = defaultStroke;
 		}
 	}
 }

@@ -3,7 +3,7 @@ float cubeSpawnPv = 4;
 float cubeSpawnAv = 0.04;
 class CubePool extends ObjectPool<Cube> {
 	IColor cubeFill = defaultFill.copy();
-	IColor cubeStroke = defaultStroke.copy();
+	//IColor cubeStroke = defaultStroke.copy();
 	float w;
 
 	void set(Cube cube, float x, float y, float z, float w, float ax, float ay, float az) {
@@ -14,7 +14,7 @@ class CubePool extends ObjectPool<Cube> {
 		cube.w.reset(w,w,w);
 		cube.fillStyle.reset(cubeFill);
 		cube.fillStyle.index = (arm-1)%binCount;
-		cube.strokeStyle.reset(cubeStroke);
+		//cube.strokeStyle.reset(cubeStroke);
 	}
 
 	void add(float x, float y, float z, float w, float ax, float ay, float az) {
@@ -120,8 +120,8 @@ class CubePool extends ObjectPool<Cube> {
 	}
 }
 
-class Cube extends MobF {
-
+class Cube extends Mob {
+	IColor fillStyle = defaultFill.copy();
 	boolean locked = false;
 	Point w;
 
@@ -143,7 +143,6 @@ class Cube extends MobF {
 
 	void update() {
 		fillStyle.update();
-		strokeStyle.update();
 		if (!locked) {
 			p.P.add(pv.p);
 			ang.P.add(av.p);
@@ -158,6 +157,7 @@ class Cube extends MobF {
 
 	void render() {
 		setDraw();
+		fillStyle.fillStyle();
 		box(w.p.x,w.p.y,w.p.z);
 		pop();
 	}

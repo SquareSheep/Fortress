@@ -35,7 +35,7 @@ class Melody1 extends Event {
 	 }
 
 	 void laser(Cube cube) {
-	 	float amp = de*10;
+	 	float amp = de*20;
 	 	mob.unlock(cube);
 	 	switch ((int)random(3)) {
 	 		case 0:
@@ -118,16 +118,41 @@ class MelodyStabs extends Event {
 	}
 }
 
-class LyricStabs extends Event {
+class GridCubesAppear extends Event {
 	BuildingGrid mob;
 	int start; int curr;
 	int index; int num;
 
-	LyricStabs(float time, BuildingGrid mob, int index, int num) {
-		super(time, time+1);
+	GridCubesAppear(float time, BuildingGrid mob, int index, int num) {
+		super(time,time+1);
 		this.mob = mob;
-		this.index = index%mob.cubes.arm;
+		this.index = index;
 		this.num = num;
+	}
+
+	GridCubesAppear(float time, BuildingGrid mob, int num) {
+		this(time, mob, 0,num);
+	}
+
+	void spawn() {
+		for (int i = 0 ; i < num ; i ++) {
+			mob.cubes.nextCubeAppear(index);
+			index = (index+1)%mob.cubes.arm;
+		}
+	}
+}
+
+class GridCubesAppearNotes extends GridCubesAppear {
+	int[] frames;
+
+	GridCubesAppearNotes(float time, float timeEnd, BuildingGrid mob, int index, int num, int[] frames) {
+		super(time,mob,index,num);
+		this.timeEnd = timeEnd;
+		this.frames = frames;
+	}
+
+	GridCubesAppearNotes(float time, float timeEnd, BuildingGrid mob, int num, int[] frames) {
+		this(time,timeEnd,mob,0,num,frames);
 	}
 
 	void spawn() {
@@ -136,29 +161,10 @@ class LyricStabs extends Event {
 
 	void update() {
 		curr = frameCount - start;
-		switch(curr) {
-			case 5:
-			spawnCubes();
-			break;
-			case 15:
-			spawnCubes();
-			break;
-			case 25:
-			spawnCubes();
-			break;
-			case 30:
-			spawnCubes();
-			break;
-		}
-	}
-
-	void spawnCubes() {
-		int count = 0;
-		float pAmp;
-		while (count < num) {
-			mob.cubes.nextCubeAppear(index);
-			count ++;
-			index = (index+1)%mob.cubes.arm;
+		for (int i = 0 ; i < frames.length ; i ++) {
+			if (curr == frames[i]) {
+				super.spawn();
+			}
 		}
 	}
 }
@@ -255,14 +261,10 @@ class LockGridCubesInstant extends Event {
 	}
 }
 
-class GridSetAv extends Event {
-	float x,y,z;
-	BuildingGrid mob;
+class GridSetAv extends GridSetXYZ {
 
 	GridSetAv(float time, BuildingGrid mob, float x, float y, float z) {
-		super(time,time+1);
-		this.mob = mob;
-		this.x = x; this.y = y; this.z = z;
+		super(time,mob,x,y,z);
 	}
 
 	void spawn() {
@@ -270,14 +272,10 @@ class GridSetAv extends Event {
 	}
 }
 
-class GridSetPv extends Event {
-	float x,y,z;
-	BuildingGrid mob;
+class GridSetPv extends GridSetXYZ {
 
 	GridSetPv(float time, BuildingGrid mob, float x, float y, float z) {
-		super(time,time+1);
-		this.mob = mob;
-		this.x = x; this.y = y; this.z = z;
+		super(time,mob,x,y,z);
 	}
 
 	void spawn() {
@@ -285,14 +283,10 @@ class GridSetPv extends Event {
 	}
 }
 
-class GridSetAng extends Event {
-	float x,y,z;
-	BuildingGrid mob;
+class GridSetAng extends GridSetXYZ {
 
 	GridSetAng(float time, BuildingGrid mob, float x, float y, float z) {
-		super(time,time+1);
-		this.mob = mob;
-		this.x = x; this.y = y; this.z = z;
+		super(time,mob,x,y,z);
 	}
 
 	void spawn() {
@@ -300,14 +294,10 @@ class GridSetAng extends Event {
 	}
 }
 
-class GridCubesAddPv extends Event {
-	float x,y;
-	BuildingGrid mob;
+class GridCubesAddPv extends GridSetXYZ {
 
 	GridCubesAddPv(float time, BuildingGrid mob, float x, float y) {
-		super(time,time+1);
-		this.mob = mob;
-		this.x = x; this.y = y;
+		super(time,mob,x,y);
 	}
 
 	void spawn() {
@@ -319,14 +309,25 @@ class GridCubesAddPv extends Event {
 	}
 }
 
-class GridCubesAddAv extends Event {
-	float x,y;
-	BuildingGrid mob;
+class GridCubesSetP extends GridSetXYZ {
+
+	GridCubesSetP(float time, BuildingGrid mob, float x) {
+		super(time,mob,x);
+	}
+
+	void spawn() {
+		float ang;
+		for (Cube cube : mob.cubes.ar) {
+			ang = atan2(cube.p.p.z-mob.p.p.z,cube.p.p.x-mob.p.p.x);
+			cube.p.P.set(cos(ang)*x,cube.p.P.y,sin(ang)*x);
+		}
+	}
+}
+
+class GridCubesAddAv extends GridSetXYZ {
 
 	GridCubesAddAv(float time, BuildingGrid mob, float x, float y) {
-		super(time,time+1);
-		this.mob = mob;
-		this.x = x; this.y = y;
+		super(time,mob,x,y);
 	}
 
 	void spawn() {
@@ -338,18 +339,37 @@ class GridCubesAddAv extends Event {
 	}
 }
 
-class SetEntityP extends Event {
+class SetEntityP extends GridSetXYZ {
+
+	SetEntityP(float time, BuildingGrid mob, float x, float y, float z) {
+		super(time,mob,x,y,z);
+	}
+
+	void spawn() {
+		mob.p.reset(x,y,z);
+	}
+}
+
+abstract class GridSetXYZ extends Event {
 	float x,y,z;
 	BuildingGrid mob;
 
-	SetEntityP(float time, BuildingGrid mob, float x, float y, float z) {
+	GridSetXYZ(float time, BuildingGrid mob, float x, float y, float z) {
 		super(time,time+1);
 		this.mob = mob;
 		this.x = x; this.y = y; this.z = z;
 	}
 
-	void spawn() {
-		mob.p.reset(x,y,z);
+	GridSetXYZ(float time, BuildingGrid mob, float x, float y) {
+		super(time,time+1);
+		this.mob = mob;
+		this.x = x; this.y = y;
+	}
+
+	GridSetXYZ(float time, BuildingGrid mob, float x) {
+		super(time,time+1);
+		this.mob = mob;
+		this.x = x;
 	}
 }
 
@@ -363,6 +383,36 @@ class SetHeartBeat extends Event {
 
 	void spawn() {
 		heart.beat = heartBeat;
+	}
+}
+
+class FillStyleSetC extends Event {
+	IColor fillStyle;
+	float r,g,b,a;
+
+	FillStyleSetC(float time, IColor fillStyle, float r, float g, float b, float a) {
+		super(time, time+1);
+		this.fillStyle = fillStyle;
+		this.r = r; this.g = g; this.b = b; this.a = a;
+	}
+
+	void spawn() {
+		fillStyle.setC(r,g,b,a);
+	}
+}
+
+class FillStyleSetM extends Event {
+	IColor fillStyle;
+	float r,g,b,a;
+
+	FillStyleSetM(float time, IColor fillStyle, float r, float g, float b, float a) {
+		super(time, time+1);
+		this.fillStyle = fillStyle;
+		this.r = r; this.g = g; this.b = b; this.a = a;
+	}
+
+	void spawn() {
+		fillStyle.setM(r,g,b,a);
 	}
 }
 

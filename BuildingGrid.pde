@@ -155,7 +155,7 @@ class BuildingGrid extends Mob {
 				return unlock(currZ, currI);
 			}
 		}
-		return null;
+		return cubes.ar.get((int)random(cubes.arm));
 	}
 
 	void unlockAll() {
@@ -189,6 +189,16 @@ class BuildingGrid extends Mob {
 		}
 		currZ = 0;
 		currI = taken[currZ].length-1;
+	}
+
+	void burst() {
+		float amp = (col+row)/2*(w*0.5);
+		unlockAll();
+		for (int i = 0 ; i < cubes.arm ; i ++) {
+			Cube cube = cubes.ar.get(i);
+			cube.p.P.add(random(-amp,amp),random(-amp,amp),random(-amp,amp));
+			cube.ang.P.set(random(-PI,PI),random(-PI,PI),random(-PI,PI));
+		}
 	}
 }
 

@@ -1,4 +1,59 @@
 // MAIN EVENTS
+class BurstingTowerRows extends Event {
+	BuildingGrid[] ar = new BuildingGrid[6];
+	float backZ, frontZ, dz;
+	int currI = 2;
+	BurstingTowerRows(float time, float timeEnd) {
+		super(time,timeEnd);
+		frontZ = de*2.5;
+		backZ = -de*2.5;
+		dz = de*1.5;
+		for (int i = 0 ; i < ar.length ; i ++) {
+			if (i % 2 == 0) {
+				ar[i] = new Tower(-de*0.6,0,-i*de, de*cubeW,5,5, 9);
+			} else {
+				ar[i] = new Tower(de*0.6,0,-i*de, de*cubeW,5,5, 9);
+			}
+			ar[i].cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
+			ar[i].cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
+			ar[i].lockAllInstant();
+			ar[i].draw = true;
+		}
+	}
+
+	void spawn() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			mobs.add(ar[i]);
+		}
+	}
+
+	void update() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			ar[i].p.P.z += 10;
+			if (ar[i].p.p.z > frontZ) {
+				ar[i].p.p.z = backZ;
+				ar[i].p.P.z = backZ;
+			}
+		}
+		if (timer.beat) {
+			for (int i = 0 ; i < ar.length ; i ++) {
+				ar[i].p.P.z += dz;
+			}
+			ar[currI].burst();
+			ar[(currI-1+ar.length)%ar.length].lockAll();
+			ar[(currI+1)%ar.length].p.p.z = backZ;
+			ar[(currI+1)%ar.length].p.P.z = backZ;
+			currI = (currI+1+ar.length)%ar.length;
+		}
+	}
+
+	void end() {
+		for (int i = 0 ; i < ar.length ; i ++) {
+			mobs.remove(ar[i]);
+		}
+	}
+}
+
 int[][] melody = new int[][]{
 	new int[]{3,13,23,33,42,53,61,72,83,102,112},
 	new int[]{5,14,23,35,57,67,78,96,115,123},
@@ -83,28 +138,19 @@ class MelodyStabs extends Event {
 		curr = frameCount-start;
 		switch (curr) {
 			case 5:
-				burst(stabs.get(index1));
+				stabs.get(index1).burst();
 				break;
 			case 15:
-				burst(stabs.get(index2));
+				stabs.get(index2).burst();
 				break;
 			case 25:
-				burst(stabs.get(index3));
+				stabs.get(index3).burst();
 				break;
 			case 30:
 				stabs.get(index1).cubes.scaX(0);
 				stabs.get(index2).cubes.scaX(0);
 				stabs.get(index3).cubes.scaX(0);
 				break;
-		}
-	}
-
-	void burst(BuildingGrid mob) {
-		mob.unlockAll();
-		for (int i = 0 ; i < mob.cubes.arm ; i ++) {
-			Cube cube = mob.cubes.ar.get(i);
-			cube.p.P.add(random(-pAmp,pAmp),random(-pAmp,pAmp),random(-pAmp,pAmp));
-			cube.ang.P.set(random(-PI,PI),random(-PI,PI),random(-PI,PI));
 		}
 	}
 
@@ -185,18 +231,13 @@ class Pulses extends Event {
 		mob.lockAllInstant();
 		mob.sca.v += 0.2;
 		mob.cubes.fillStyleSetC(random(55,175),random(55,175),random(55,175),255, random(-100,100),random(-100,100),random(-100,100),0);
-		for (int i = 0 ; i < mob.cubes.arm ; i ++) {
-			mob.cubes.get(i).av.reset(random(-angAmp, angAmp),random(-angAmp, angAmp),random(-angAmp, angAmp));
-		}
 	}
 
 	void update() {
 		if (timer.beat) {
-			mob.sca.v += 0.3;
+			mob.sca.v += 0.2;
 			mob.cubes.fillStyleSetC(random(55,175),random(55,175),random(55,175),255, random(-100,100),random(-100,100),random(-100,100),0);
-			for (int i = 0 ; i < mob.cubes.arm ; i ++) {
-				mob.cubes.get(i).av.reset(random(-angAmp, angAmp),random(-angAmp, angAmp),random(-angAmp, angAmp));
-			}
+
 		}
 	}
 
@@ -208,6 +249,19 @@ class Pulses extends Event {
 }
 
 // MODIFICATION EVENTS
+class BurstGridCubes extends Event {
+	BuildingGrid mob;
+
+	BurstGridCubes(float time, BuildingGrid mob) {
+		super(time,time+1);
+		this.mob = mob;
+	}
+
+	void spawn() {
+		mob.burst();
+	}
+}
+
 class LockGridCubes extends Event {
 	int num;
 	BuildingGrid mob;
@@ -339,14 +393,29 @@ class GridCubesAddAv extends GridSetXYZ {
 	}
 }
 
-class SetEntityP extends GridSetXYZ {
+class GridSetP extends GridSetXYZ {
 
-	SetEntityP(float time, BuildingGrid mob, float x, float y, float z) {
+	GridSetP(float time, BuildingGrid mob, float x, float y, float z) {
 		super(time,mob,x,y,z);
 	}
 
 	void spawn() {
 		mob.p.reset(x,y,z);
+	}
+}
+
+class GridSetPillar extends Event {
+	BuildingGrid mob;
+	boolean pillar;
+
+	GridSetPillar(float time, BuildingGrid mob, boolean pillar) {
+		super(time,time+1);
+		this.mob = mob;
+		this.pillar = pillar;
+	}
+
+	void spawn() {
+		mob.pillar = pillar;
 	}
 }
 

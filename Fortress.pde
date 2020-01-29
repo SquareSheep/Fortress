@@ -110,7 +110,6 @@ void updateEvents() {
         }
         if (!event.finished) {
           event.end();
-          println(frameCount);
         }
         event.finished = true;
         
@@ -120,7 +119,7 @@ void updateEvents() {
 
 void updateMobs() {
   for (BuildingGrid mob : mobs) {
-    mob.update();
+    if (mob.draw) mob.update();
   }
   for (int i = 0 ; i < mobs.size() ; i ++) {
     if (mobs.get(i).finished) mobs.remove(i);

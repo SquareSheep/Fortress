@@ -22,11 +22,12 @@ Tower castle;
 Tower tower;
 Heart heart;
 Tower[] towers = new Tower[4];
+Tower[] fodder = new Tower[6];
 
 ArrayList<BuildingGrid> stabs = new ArrayList<BuildingGrid>();
 
 void render() {
-	if (timer.beat) println(frameCount + " " + currBeat);
+	if (timer.beat) println(frameCount + " " + (int)(currBeat+1));
 	if (heart.draw) {
 		heart.p.P.y -= cos(frameCount/60);
 		heart.sca.X = 1+avg/1000;
@@ -67,6 +68,14 @@ void setSketch() {
 	towers[1].p.reset(dt,0,-dt);
 	towers[2].p.reset(dt,0,dt);
 	towers[3].p.reset(-dt,0,dt);
+
+	for (int i = 0 ; i < fodder.length ; i ++) {
+		fodder[i] = new Tower(0,0,0, de*cubeW,5,5,10);
+		fodder[i].cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);
+		fodder[i].cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
+		//fodder[i].lockAllInstant();
+		mobs.add(fodder[i]);
+	}
 
 	for (int i = 0 ; i < 3 ; i ++) {
 		stabs.add(new Tower(i*de*0.8-de*0.8,0,0, de*cubeW, 5,5,10));

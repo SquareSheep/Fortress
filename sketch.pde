@@ -56,7 +56,7 @@ void setSketch() {
 	castle.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	mobs.add(castle);
 
-	float dt = de*0.8;
+	float dt = de*0.9;
 	for (int i = 0 ; i < towers.length ; i ++) {
 		towers[i] = new Tower(0,0,0, de*cubeW,5,5,10);
 		towers[i].cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);

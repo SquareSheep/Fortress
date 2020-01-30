@@ -1,6 +1,7 @@
 void addEvents() {
 	// Intro section
 	float cameraAngle = -0.2;
+	events.add(new FillStyleSetC(0,defaultStroke,232,232,230,255));
 	events.add(new SetEntityDraw(0,heart,true));
 	events.add(new SetGridCubeDraw(0,castle,true,false));
 	events.add(new GridSetPillar(0,castle,false));
@@ -16,13 +17,20 @@ void addEvents() {
 	events.add(new GridCubesAppearNotes(20,22,castle,10, new int[]{31,50}));
 	events.add(new GridCubesAppearNotes(24,26,castle,10, new int[]{1772-1743,1795-1743,1814-1743}));
 	events.add(new GridCubesAppear(29,castle,10));
+	for (int i = 0 ; i < 3 ; i ++) {
+		events.add(new SetHeartAv(29+i,0.01+i*0.03));
+	}
 
 	// Lyric section "Building ... I thought we were better"
 	//events.add(new SetEntityDraw(0,heart,true));
-	events.add(new CameraSetP(66,cameraAngle,0,0));
-	events.add(new CameraSetAv(66,0,0.003,0));
+	events.add(new SetHeartAv(33,0));
+	events.add(new SetHeartAng(33,0));
+	events.add(new CameraSetP(33,cameraAngle,0,0));
+	events.add(new CameraSetAv(33,0,0.003,0));
 	events.add(new SetGridCubeDraw(33,castle,true,false));
 	events.add(new GridSetPillar(0,castle,true));
+
+	events.add(new GridBounceBeat(32,66,castle,2,1));
 	for (int i = 0 ; i < 7 ; i ++) {
 		events.add(new GridCubesAppearNotes(33+i*4,35+i*4,castle,12, new int[]{5,15,25,30}));
 		events.add(new LockGridCubes(35+i*4,4, castle, 48,true));
@@ -40,15 +48,19 @@ void addEvents() {
 		events.add(new GridCubesAddPv(81+i,castle, 0.03,0));
 	}
 	events.add(new GridCubesSetP(93,castle,0));
-	events.add(new GridSetAv(93,castle, 0,-0.3,0));
+	events.add(new GridSetAv(93,castle, 0,-0.1,0));
 	events.add(new GridCubesAddPv(93,castle, -100,0));
+	events.add(new SetHeartAv(93,0.15));
 
 	events.add(new SetEntityDraw(97, castle, false));
 
 	// Melody section
+	events.add(new SetHeartAv(97,0));
+	events.add(new SetHeartAng(97,0));
 	events.add(new CameraSetAv(97,0,0.003,0));
 	events.add(new SetHeartBeat(97,true));
 	events.add(new LockGridCubesInstant(97,tower,true));
+	events.add(new GridBounceBeat(97,125,tower,2,1));
 	for (int i = 0 ; i < 7 ; i ++) {
 		events.add(new SetEntityDraw(97+i*4, heart, false));
 		events.add(new SetEntityDraw(97+i*4, tower, false));
@@ -84,6 +96,7 @@ void addEvents() {
 	// Melody section 2
 	events.add(new FillStyleSetC(129,defaultStroke,232,232,230,255));
 	events.add(new CameraSetAv(129,0,-0.008,0));
+	events.add(new GridBounceBeat(129,157,castle,2,1));
 	for (int i = 0 ; i < 7 ; i ++) {
 		events.add(new SetEntityDraw(129+i*4, heart, false));
 		events.add(new SetEntityDraw(129+i*4, castle, false));
@@ -131,6 +144,7 @@ void addEvents() {
 	}
 
 	// Lyric section "Moving pictures ... Just let it consume us"
+	events.add(new SetHeartBeat(193,false));
 	events.add(new CameraSetAv(193,0,0.003,0));
 	events.add(new CameraSetP(193,0,PI/2,0));
 	for (int i = 0 ; i < fodder.length ; i ++) {
@@ -144,9 +158,10 @@ void addEvents() {
 	for (int i = 0 ; i < 8 ; i ++) {
 		for (int k = 0 ; k < 2 ; k ++) {
 			int index = (int)random(fodder.length);
+			events.add(new GridAddAng(193+i*4,fodder[index],0,PI/4,0));
 			events.add(new GridCubesAppearNotes(193+i*4,195+i*4,fodder[index],14,new int[]{5,15,25}));
 			events.add(new LockGridCubes(193+i*4,195+i*4,fodder[index],14*3,true));
-			events.add(new GridCubeFillStyleSetC(193+i*4,fodder[index], random(75,155),random(75,155),random(75,155),255, random(-100,100),random(-100,100),random(-100,100),0));
+			events.add(new GridCubeFillStyleSetC(193+i*4,fodder[index], random(100,175),random(100,175),random(100,175),255, random(-100,100),random(-100,100),random(-100,100),0));
 		}
 	}
 	for (int i = 0 ; i < fodder.length ; i ++) {
@@ -175,19 +190,88 @@ void addEvents() {
 	}
 
 	//Final build up253, "help me to break through"255, start of next257
-	events.add(new CameraSetAv(257,0,0.003,0));
-	events.add(new CameraSetP(257,0,PI/2,0));
+	events.add(new FillStyleSetC(257,defaultStroke,232,232,230,255));
+	events.add(new SetHeartAv(257,0));
+	events.add(new SetHeartAng(257,0));
+	events.add(new SetHeartBeat(257,true));
+	events.add(new CameraSetAv(257,0,0.005,0));
+	events.add(new CameraSetP(257,cameraAngle,0,0));
 	events.add(new SetGridCubeDraw(257,castle,true));
 	events.add(new LockGridCubesInstant(257,castle,true));
+	events.add(new GridBounceBeat(257,285,castle,2,1));
+	for (int i = 0 ; i < 4 ; i ++) {
+		events.add(new LockGridCubesInstant(257,towers[i],true));
+		events.add(new GridBounceBeat(257,285,towers[i],2,1));
+	}
 
-	//Song ends ~340
+	for (int i = 0 ; i < 7 ; i ++) {
+		events.add(new SetEntityDraw(257+i*4, heart, false));
+		events.add(new SetEntityDraw(257+i*4, castle, false));
+		for (int k = 0 ; k < 4 ; k ++) {
+			events.add(new SetEntityDraw(257+i*4, towers[k],false));
+		}
+		events.add(new MelodyStabs(257+i*4));
+		events.add(new SetEntityDraw(258+i*4, heart, true));
+		events.add(new SetEntityDraw(258+i*4, castle, true));
+		for (int k = 0 ; k < 4 ; k ++) {
+			events.add(new SetEntityDraw(258+i*4, towers[k],true));
+		}
+	}
+	events.add(new GridCubesAddPv(258,castle,10,-10));
+	addMainMelody(258,castle);
+	for (int k = 0 ; k < 4 ; k ++) {
+		events.add(new GridCubesAddPv(258, towers[k],10,-10));
+		addMainMelody(258,towers[k]);
+	}
+
+	//Pulses 285
+	events.add(new CameraSetAv(285,0,-0.005,0));
+	for (int i = 0 ; i < towers.length ; i ++) {
+		events.add(new Pulses(285,towers[i]));
+		events.add(new BurstGridCubes(285+i, towers[i]));
+	}
+
+	for (int i = 0 ; i < towers.length ; i ++) {
+		events.add(new SetEntityDraw(289,towers[i],false));
+	}
+
+	events.add(new CameraSetP(289,-0.7,0,0));
+	events.add(new GridSetPv(289,castle,0,10,0));
+	events.add(new GridCubesResetPv(289,castle));
+	events.add(new GridCubesAddPv(289,castle,-10,10));
+	events.add(new BurstGridCubes(290,castle));
+	events.add(new SetEntityDraw(297,castle,false));
+
+	for (int i = 0 ; i < 6 ; i ++) {
+		events.add(new SetGridCubeDraw(289+i*4,fodder[i%fodder.length],true));
+		events.add(new LockGridCubesInstant(289+i*4,fodder[i%fodder.length],true));
+		events.add(new GridSetP(289+i*4,fodder[i%fodder.length],0,-de*2.5,0));
+		events.add(new GridSetAv(289+i*4,fodder[i%fodder.length],random(-0.01,0.01),random(-0.03,0.03),random(-0.01,0.01)));
+		events.add(new GridSetPv(289+i*4,fodder[i%fodder.length],0,18,0));
+		events.add(new BurstGridCubes(293+i*4,fodder[i%fodder.length]));
+	}
+
+	events.add(new CameraSetAv(317,0,0.005,0));
+	for (int i = 0 ; i < towers.length ; i ++) {
+		events.add(new SetGridCubeDraw(314,towers[i],true));
+		events.add(new LockGridCubesInstant(314,towers[i],true));
+		events.add(new GridSetP(314,towers[i],towers[i].p.p.x,-de*2,towers[i].p.p.z));
+		events.add(new GridSetAv(314,towers[i],random(-0.01,0.01),random(-0.03,0.03),random(-0.01,0.01)));
+		events.add(new GridSetPv(314,towers[i],0,15,0));
+		events.add(new GridSetPillar(314,towers[i],false));
+		events.add(new BurstGridCubes(317+i,towers[i]));
+	}
+	events.add(new SetHeartAv(317,0.025));
+	events.add(new CameraSetAv(317,0.002,0.005,0));
+
+	//Animation ends ~320
 }
 
 void addMainMelody(int start, BuildingGrid mob) {
 	events.add(new Melody1(start, mob, melody[0]));
-	events.add(new AllCubesFillStyleSetC(start,55,200,100,255, 55,-100,100,0));
+	events.add(new AllCubesFillStyleSetC(start,55,150,100,255, 55,-100,100,0));
 	events.add(new Melody1(start + 4, mob, melody[1]));
-	events.add(new AllCubesFillStyleSetC(start + 4, 200,100,55,255, 100,-100,55,0));
+	events.add(new AllCubesFillStyleSetC(start + 4, 150,100,55,255, 100,-100,55,0));
 	events.add(new Melody1(start + 8, mob, melody[2]));
 	events.add(new AllCubesFillStyleSetC(start + 8, 115,55,225,255, 115,-55,100,0));
 	events.add(new Melody1(start + 12, mob, melody[3]));
@@ -228,6 +312,12 @@ void keyboardInput() {
 		break;
 		case '9':
 		setTime(153019,223);
+		break;
+		case '0':
+		setTime(174962,255);
+		break;
+		case 'q':
+		setTime(192795,281);
 		break;
 	}
 }

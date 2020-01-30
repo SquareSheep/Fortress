@@ -1,3 +1,13 @@
+/*
+FIX MELODY
+FIX TOWER COLORS THAT LOOK TOO BLUE AND SAMEY
+ADD WAVE PATTERNS?
+"Moving, pictures" section: towers are off center
+-Also,cubes spin too fast in the buildup there
+ADD SOMETHING TO THE LAST MELODY SECTION
+ADD FADE OUT (Probably in Davinci)
+*/
+
 // MAIN EVENTS
 class BurstingTowerRows extends Event {
 	BuildingGrid[] ar = new BuildingGrid[6];
@@ -248,6 +258,30 @@ class Pulses extends Event {
 	}
 }
 
+class GridBounceBeat extends Event {
+	BuildingGrid mob;
+	int tick;
+	int offset;
+
+	GridBounceBeat(float time, float timeEnd, BuildingGrid mob, int tick, int offset) {
+		super(time,timeEnd);
+		this.mob = mob;
+		this.tick = tick;
+		this.offset = offset;
+	}
+
+	void update() {
+		if (timer.beat && currBeat % tick == offset) {
+			for (int i = 0 ; i < mob.cubes.arm ; i ++) {
+				Cube cube = mob.cubes.ar.get(i);
+				if (cube.draw && cube.locked) {
+					cube.p.p.y -= cube.w.p.x*0.5;
+				}
+			}
+		}
+	}
+}
+
 // MODIFICATION EVENTS
 class BurstGridCubes extends Event {
 	BuildingGrid mob;
@@ -348,6 +382,17 @@ class GridSetAng extends GridSetXYZ {
 	}
 }
 
+class GridAddAng extends GridSetXYZ {
+
+	GridAddAng(float time, BuildingGrid mob, float x, float y, float z) {
+		super(time,mob,x,y,z);
+	}
+
+	void spawn() {
+		mob.ang.P.add(x,y,z);
+	}
+}
+
 class GridCubesAddPv extends GridSetXYZ {
 
 	GridCubesAddPv(float time, BuildingGrid mob, float x, float y) {
@@ -359,6 +404,21 @@ class GridCubesAddPv extends GridSetXYZ {
 		for (Cube cube : mob.cubes.ar) {
 			ang = atan2(cube.p.p.z-mob.p.p.z,cube.p.p.x-mob.p.p.x);
 			cube.pv.P.add(cos(ang)*x,y,sin(ang)*x);
+		}
+	}
+}
+
+class GridCubesResetPv extends Event {
+	BuildingGrid mob;
+
+	GridCubesResetPv(float time, BuildingGrid mob) {
+		super(time,time+1);
+		this.mob = mob;
+	}
+
+	void spawn() {
+		for (Cube cube : mob.cubes.ar) {
+			cube.pv.reset(0,0,0);
 		}
 	}
 }
@@ -452,6 +512,32 @@ class SetHeartBeat extends Event {
 
 	void spawn() {
 		heart.beat = heartBeat;
+	}
+}
+
+class SetHeartAv extends Event {
+	float av;
+	SetHeartAv(float time, float av) {
+		super(time,time+1);
+		this.av = av;
+	}
+
+	void spawn() {
+		heart.av.P.y = av;
+		heart.av.p.y = av;
+	}
+}
+
+class SetHeartAng extends Event {
+	float av;
+	SetHeartAng(float time, float av) {
+		super(time,time+1);
+		this.av = av;
+	}
+
+	void spawn() {
+		heart.ang.P.y = av;
+		heart.ang.p.y = av;
 	}
 }
 

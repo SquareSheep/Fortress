@@ -31,7 +31,7 @@ char keyR;
 char keyP;
 
 void setup() {
-  size(1280,960,P3D);
+  size(1100,1100,P3D);
   de = (int)(width*0.5+height*0.5);
 
   cam = new Camera(width*0.5,height*1.1,-de*2.2, -0.35,0,0);

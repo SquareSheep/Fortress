@@ -143,20 +143,21 @@ void addEvents() {
 		events.add(new FillStyleSetC(161+i*2+1,defaultStroke,0,0,0,255));
 	}
 
-	// Lyric section "Moving pictures ... Just let it consume us"
+	events.add(new SetEntityDraw(193,heart,false));// Lyric section "Moving pictures ... Just let it consume us"
+
 	events.add(new SetHeartBeat(193,false));
 	events.add(new CameraSetAv(193,0,0.003,0));
 	events.add(new CameraSetP(193,0,PI/2,0));
 	for (int i = 0 ; i < fodder.length ; i ++) {
 		events.add(new SetGridCubeDraw(193,fodder[i],true,false));
-		events.add(new GridSetAv(193,fodder[i],random(-0.001,0.001),random(-0.001,0.001),random(-0.001,0.001)));
-		events.add(new GridSetPv(193,fodder[i],random(-1,1),random(-1,1),random(-1,1)));
-		events.add(new GridSetP(193,fodder[i],random(-de,de),random(-de*0.5,0),random(-de,de)));
+		events.add(new GridSetAv(193,fodder[i],random(-0.0005,0.0005),random(-0.003,0.003),random(-0.0005,0.0005)));
+		events.add(new GridSetPv(193,fodder[i],random(-0.15,0.15),random(-0.15,0.15),random(-0.15,0.15)));
+		events.add(new GridSetP(193,fodder[i],cos((float)i/fodder.length*2*PI)*de,random(-de*0.25,de*0.25),sin((float)i/fodder.length*2*PI)*de));
 		events.add(new GridSetPillar(193,fodder[i],false));
 	}
 
 	for (int i = 0 ; i < 8 ; i ++) {
-		for (int k = 0 ; k < 2 ; k ++) {
+		for (int k = 0 ; k < 3 ; k ++) {
 			int index = (int)random(fodder.length);
 			events.add(new GridAddAng(193+i*4,fodder[index],0,PI/4,0));
 			events.add(new GridCubesAppearNotes(193+i*4,195+i*4,fodder[index],14,new int[]{5,15,25}));
@@ -246,8 +247,9 @@ void addEvents() {
 		events.add(new SetGridCubeDraw(289+i*4,fodder[i%fodder.length],true));
 		events.add(new LockGridCubesInstant(289+i*4,fodder[i%fodder.length],true));
 		events.add(new GridSetP(289+i*4,fodder[i%fodder.length],0,-de*2.5,0));
+		events.add(new GridSetAng(289+i*4,fodder[i%fodder.length],0,0,0));
 		events.add(new GridSetAv(289+i*4,fodder[i%fodder.length],random(-0.01,0.01),random(-0.03,0.03),random(-0.01,0.01)));
-		events.add(new GridSetPv(289+i*4,fodder[i%fodder.length],0,18,0));
+		events.add(new GridSetPv(289+i*4,fodder[i%fodder.length],0,13,0));
 		events.add(new BurstGridCubes(293+i*4,fodder[i%fodder.length]));
 	}
 
@@ -255,8 +257,9 @@ void addEvents() {
 	for (int i = 0 ; i < towers.length ; i ++) {
 		events.add(new SetGridCubeDraw(314,towers[i],true));
 		events.add(new LockGridCubesInstant(314,towers[i],true));
-		events.add(new GridSetP(314,towers[i],towers[i].p.p.x,-de*2,towers[i].p.p.z));
+		events.add(new GridSetP(314,towers[i],towers[i].p.p.x,-de*2.7,towers[i].p.p.z));
 		events.add(new GridSetAv(314,towers[i],random(-0.01,0.01),random(-0.03,0.03),random(-0.01,0.01)));
+		events.add(new GridSetAng(314,towers[i],0,0,0));
 		events.add(new GridSetPv(314,towers[i],0,15,0));
 		events.add(new GridSetPillar(314,towers[i],false));
 		events.add(new BurstGridCubes(317+i,towers[i]));

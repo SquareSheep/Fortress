@@ -18,7 +18,7 @@ void addEvents() {
 	events.add(new GridCubesAppearNotes(24,26,castle,10, new int[]{1772-1743,1795-1743,1814-1743}));
 	events.add(new GridCubesAppear(29,castle,10));
 	for (int i = 0 ; i < 3 ; i ++) {
-		events.add(new SetHeartAv(29+i,0.01+i*0.03));
+		events.add(new SetHeartAv(28+i,0.01+i*0.06));
 	}
 
 	// Lyric section "Building ... I thought we were better"
@@ -180,7 +180,7 @@ void addEvents() {
 		}
 	}
 	for (int i = 0 ; i < fodder.length ; i ++) {
-		events.add(new GridSetAv(253,fodder[i], 0,-0.3,0));
+		events.add(new PVectorAdd(253,fodder[i].av.P, 0,0.2,0));
 		events.add(new GridCubesSetP(253,fodder[i],0));
 		events.add(new GridCubesAddPv(253,fodder[i],50,0));
 	}
@@ -268,18 +268,19 @@ void addEvents() {
 }
 
 void addMainMelody(int start, BuildingGrid mob) {
+	events.add(new AllCubesFillStyleSetC(start-1,55,75,200,255, 55,-100,100,0));
 	events.add(new Melody1(start, mob, melody[0]));
-	events.add(new AllCubesFillStyleSetC(start,55,150,100,255, 55,-100,100,0));
+	//events.add(new AllCubesFillStyleSetC(start,55,75,200,255, 55,-100,100,0));
 	events.add(new Melody1(start + 4, mob, melody[1]));
 	events.add(new AllCubesFillStyleSetC(start + 4, 150,100,55,255, 100,-100,55,0));
 	events.add(new Melody1(start + 8, mob, melody[2]));
-	events.add(new AllCubesFillStyleSetC(start + 8, 115,55,225,255, 115,-55,100,0));
+	events.add(new AllCubesFillStyleSetC(start + 8, 200,55,200,255, 115,-55,100,0));
 	events.add(new Melody1(start + 12, mob, melody[3]));
 	events.add(new AllCubesFillStyleSetC(start + 12, 56,115,207,255,56,115,40,0));
 	events.add(new Melody1(start + 16, mob, melody[0]));
 	events.add(new AllCubesFillStyleSetC(start + 16, 125,100,55,255, 100,-100,55,0));
 	events.add(new Melody1(start + 20, mob, melody[4]));
-	events.add(new AllCubesFillStyleSetC(start + 20, 115,55,225,255, 115,-55,100,0));
+	events.add(new AllCubesFillStyleSetC(start + 20, 200,55,200,255, 115,-55,100,0));
 	events.add(new Melody1(start + 24, mob, melody[5]));
 	events.add(new AllCubesFillStyleSetC(start + 24, 56,115,207,255,56,115,40,0));
 }

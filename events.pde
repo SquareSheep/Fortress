@@ -1,11 +1,10 @@
 /*
 FIX MELODY
-FIX TOWER COLORS THAT LOOK TOO BLUE AND SAMEY
+--//FIX TOWER COLORS THAT LOOK TOO BLUE AND SAMEY
 ADD WAVE PATTERNS?
-"Moving, pictures" section: towers are off center
--Also,cubes spin too fast in the buildup there
+--//"Moving, pictures" section: towers are off center
+--//Also,cubes spin too fast in the buildup there
 ADD SOMETHING TO THE LAST MELODY SECTION
-ADD FADE OUT (Probably in Davinci)
 */
 
 // MAIN EVENTS
@@ -538,36 +537,6 @@ class SetHeartAng extends Event {
 	void spawn() {
 		heart.ang.P.y = av;
 		heart.ang.p.y = av;
-	}
-}
-
-class FillStyleSetC extends Event {
-	IColor fillStyle;
-	float r,g,b,a;
-
-	FillStyleSetC(float time, IColor fillStyle, float r, float g, float b, float a) {
-		super(time, time+1);
-		this.fillStyle = fillStyle;
-		this.r = r; this.g = g; this.b = b; this.a = a;
-	}
-
-	void spawn() {
-		fillStyle.setC(r,g,b,a);
-	}
-}
-
-class FillStyleSetM extends Event {
-	IColor fillStyle;
-	float r,g,b,a;
-
-	FillStyleSetM(float time, IColor fillStyle, float r, float g, float b, float a) {
-		super(time, time+1);
-		this.fillStyle = fillStyle;
-		this.r = r; this.g = g; this.b = b; this.a = a;
-	}
-
-	void spawn() {
-		fillStyle.setM(r,g,b,a);
 	}
 }
 

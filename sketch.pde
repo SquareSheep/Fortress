@@ -10,7 +10,7 @@ static float fillVMult = 0.15;
 static float fftThreshold = 1.5;
 static float fftPow = 2;
 static float fftAmp = 3;
-static float volumeGain = -10;
+static float volumeGain = -9;
 static String songName = "../Music/fortress.mp3";
 
 IColor defaultFill = new IColor(56,115,207,255);
@@ -31,7 +31,7 @@ void render() {
 	if (heart.draw) {
 		heart.p.P.y -= cos(frameCount/60);
 		heart.sca.X = 1+avg/1000;
-		if (timer.beat && heart.beat) heart.sca.x += 0.25;
+		if (timer.beat && heart.beat) heart.sca.x += 0.35;
 		heart.update();
 		heart.render();
 	}
@@ -48,19 +48,16 @@ void setSketch() {
 	
 	tower = new Tower(0,0,0, de*cubeW,5,5, 9);
 	tower.cubes.fillStyleSetC(56,115,207,255, 56,115,115,0);
-	tower.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	mobs.add(tower);
 	
 	castle = new Tower(0,0,0, de*cubeW,11,11, 8);
 	castle.cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);
-	castle.cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 	mobs.add(castle);
 
 	float dt = de*0.9;
 	for (int i = 0 ; i < towers.length ; i ++) {
 		towers[i] = new Tower(0,0,0, de*cubeW,5,5,10);
 		towers[i].cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);
-		towers[i].cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 		towers[i].lockAllInstant();
 		mobs.add(towers[i]);
 	}
@@ -72,7 +69,6 @@ void setSketch() {
 	for (int i = 0 ; i < fodder.length ; i ++) {
 		fodder[i] = new Tower(0,0,0, de*cubeW,5,5,10);
 		fodder[i].cubes.fillStyleSetC(56,115,207,255, 56,115,48,0);
-		fodder[i].cubes.fillStyleSetM(1,1,1,0, 1,1,2,0);
 		//fodder[i].lockAllInstant();
 		mobs.add(fodder[i]);
 	}

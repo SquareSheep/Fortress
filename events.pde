@@ -1,9 +1,6 @@
 /*
-FIX MELODY
---//FIX TOWER COLORS THAT LOOK TOO BLUE AND SAMEY
-ADD WAVE PATTERNS?
---//"Moving, pictures" section: towers are off center
---//Also,cubes spin too fast in the buildup there
+MAKE INTRO MORE INTERESTING
+FIX MELODY?
 ADD SOMETHING TO THE LAST MELODY SECTION
 */
 
@@ -37,6 +34,8 @@ class BurstingTowerRows extends Event {
 	}
 
 	void update() {
+		cam.ang.P.x += sin((float)frameCount/80)*0.0004;
+		cam.ang.P.y += cos((float)frameCount/80)*0.0005;
 		for (int i = 0 ; i < ar.length ; i ++) {
 			ar[i].p.P.z += 10;
 			if (ar[i].p.p.z > frontZ) {
@@ -99,7 +98,7 @@ class Melody1 extends Event {
 	 }
 
 	 void laser(Cube cube) {
-	 	float amp = de*20;
+	 	float amp = de*50;
 	 	mob.unlock(cube);
 	 	switch ((int)random(3)) {
 	 		case 0:
@@ -274,9 +273,29 @@ class GridBounceBeat extends Event {
 			for (int i = 0 ; i < mob.cubes.arm ; i ++) {
 				Cube cube = mob.cubes.ar.get(i);
 				if (cube.draw && cube.locked) {
-					cube.p.p.y -= cube.w.p.x*0.5;
+					cube.p.p.y -= cube.w.p.x*random(0.3,0.7+i*0.003);
 				}
 			}
+		}
+	}
+}
+
+class FlipLights extends Event {
+	FlipLights(float time) {
+		super(time,time+1);
+	}
+
+	void spawn() {
+		if (defaultStroke.rc == 0) {
+			for (BuildingGrid mob : mobs) {
+				mob.cubes.fillStyleSetM(-1.5,-1.5,-1.5,-1,1,1,1,0);
+			}
+			defaultStroke.setC(232,232,230,255);
+		} else {
+			for (BuildingGrid mob : mobs) {
+				mob.cubes.fillStyleSetM(1.5,1.5,1.5,-1,-1,-1,-1,0);
+			}
+			defaultStroke.setC(0,0,0,255);
 		}
 	}
 }
@@ -292,6 +311,21 @@ class BurstGridCubes extends Event {
 
 	void spawn() {
 		mob.burst();
+	}
+}
+
+class LockRandomGridCubes extends Event {
+	int num;
+	BuildingGrid mob;
+
+	LockRandomGridCubes(float time, BuildingGrid mob, int num) {
+		super(time,time+1);
+		this.mob = mob;
+		this.num = num;
+	}
+
+	void spawn() {
+		mob.lockRandom(num);
 	}
 }
 
@@ -642,6 +676,10 @@ class GridCubeFillStyleSetC extends Event {
 		this.mob = mob;
 		this.r = r; this.g = g; this.b = b; this.a = a;
 		this.rr = rr; this.gr = gr; this.br = br; this.aa = aa;
+	}
+
+	GridCubeFillStyleSetC(float time, BuildingGrid mob) {
+		this(time, mob, random(100,175),random(100,175),random(100,175),255, random(-100,100),random(-100,100),random(-100,100),0);
 	}
 
 	void spawn() {

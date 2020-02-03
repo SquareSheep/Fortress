@@ -68,7 +68,7 @@ class BuildingGrid extends Mob {
 		}
 		if (pillar) {
 			translate(0,de-cubes.w/2,0);
-			fillStyle.fillStyle();
+			fill(defaultFill.r.x,defaultFill.g.x, defaultFill.b.x,200);
 			defaultStroke.strokeStyle();
 			box(w*1.2,de*2,w*1.2);
 		}
@@ -113,6 +113,17 @@ class BuildingGrid extends Mob {
 			if (currZ > -1) {
 				lock(currZ, currI);
 			}
+		}
+	}
+
+	void lockRandom(int num) {
+		int temp;
+		for (int i = 0 ; i < num ; i ++) {
+			cubes.ar.get(i).draw = true;
+		}
+		for (int i = 0 ; i < num ; i ++) {
+			temp = (int)random(taken.length);
+			lock(temp,(int)random(taken[temp].length));
 		}
 	}
 
@@ -196,7 +207,7 @@ class BuildingGrid extends Mob {
 		unlockAll();
 		for (int i = 0 ; i < cubes.arm ; i ++) {
 			Cube cube = cubes.ar.get(i);
-			cube.p.P.add(random(-amp,amp),random(-amp,amp),random(-amp,amp));
+			cube.p.P.add(random(-amp,amp),random(-amp*0.6,amp*0.6),random(-amp,amp));
 			cube.ang.P.set(random(-PI,PI),random(-PI,PI),random(-PI,PI));
 		}
 	}

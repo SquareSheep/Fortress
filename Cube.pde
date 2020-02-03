@@ -52,12 +52,12 @@ class CubePool extends ObjectPool<Cube> {
 		if (k < arm && !ar.get(k).locked) {
 			Cube cube = ar.get(k);
 			cube.draw = true;
-			cube.p.reset(random(-de,de),random(-de*2,0),random(-de,de));
+			cube.p.reset(random(-de*1.5,de*1.5),random(-de*2,0),random(-de*1.5,de*1.5));
 			cube.w.p.set(0,0,0);
 			cube.w.v.x += cube.w.P.x;
 			cube.sca.x += 1;
 			float pAmp = cube.w.P.x;
-			cube.p.P.add(random(-pAmp,pAmp),random(-pAmp,pAmp),random(-pAmp,pAmp));
+			cube.p.P.add(random(-pAmp*1.5,pAmp*1.5),random(-pAmp,pAmp),random(-pAmp,pAmp));
 			cube.ang.P.add(random(-PI,PI),random(-PI,PI),random(-PI,PI));
 		}
 	}
